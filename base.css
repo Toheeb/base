@@ -1,0 +1,737 @@
+
+/* UNIVERSAL
+    ========================================================= */
+
+/* 1 */
+:root {
+  --base-corner-radius: .2em;
+}
+
+*, ::before, ::after 
+{
+  /* 1 */
+  border-radius: var(--base-corner-radius);
+
+  /* 2 */
+  box-sizing: border-box;
+}
+
+
+
+
+/* TYPOGRAPHY
+   ========================================================= */
+
+:root {
+
+  /* 1 */
+  --base-font-size: 1;
+  --base-font-scale: 1.2;
+  --base-line-height: .7;
+  --base-font-family: system-ui;
+  
+  /* 2 */
+  --bfs-050: (var(--bfs-100) / (var(--base-font-scale) * var(--base-font-scale)));
+  --bfs-075: (var(--bfs-100) / (var(--base-font-scale)));
+  --bfs-100: (var(--base-font-size));
+  --bfs-200: (var(--bfs-100) * var(--base-font-scale));
+  --bfs-300: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale));
+  --bfs-400: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));
+  --bfs-500: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));
+  --bfs-600: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));
+  --bfs-700: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));
+  --bfs-800: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));  
+  --bfs-900: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));  
+}
+
+/* 3a */
+p:has(~ :is(h1, h2, h3, h4, h5, h6)), 
+small, ::marker
+{
+  --bfs: var(--bfs-075);
+}
+
+/* 3b */
+body, 
+p, pre, 
+summary, legend, dt, th 
+{
+  --bfs: var(--bfs-100);
+}
+
+/* 3c */
+:is(h1, h2, h3, h4, h5, h6) ~ p 
+{
+  --bfs: var(--bfs-200);
+}
+
+
+/* 3d */
+
+h6 {
+  --bfs: var(--bfs-300);
+}
+
+h5 {
+  --bfs: var(--bfs-400);
+}
+
+h4 {
+  --bfs: var(--bfs-500);
+}
+
+h3 {
+  --bfs: var(--bfs-600);
+}
+
+h2 {
+  --bfs: var(--bfs-700);
+}
+
+h1 {
+  --bfs: var(--bfs-800);
+}
+
+/* 4 */
+body,
+h1, h2, h3, h4, h5, h6, 
+summary, legend, dt, th, 
+p, pre,
+small, ::marker
+{
+
+  /* 4a */
+  font-family: var(--base-font-family);
+
+  /* 4b */
+  font-size: calc(var(--bfs) * 1rem);
+
+  /* 4c */
+  line-height: calc(
+    1 + (
+      var(--base-line-height) / var(--bfs)      
+    )
+  );
+}
+
+/* 5 */
+p {
+  text-wrap: pretty;
+}
+
+/* 6 */
+h1, h2, h3, h4, h5, h6, 
+:is(h1, h2, h3, h4, h5, h6) ~ p,
+summary, legend, dt, th 
+{
+  text-wrap: balance;
+} 
+
+
+
+
+/* SPACING
+    ========================================================= */
+
+/* 1 - 3 */
+:root {
+
+  /* 1 */
+  --base-mode-indent: 0;
+  --base-block-gap: .9;
+  --base-line-length: 36rem;
+
+  /* 2 */
+  --bbg: calc(1rem * var(--base-block-gap) * var(--base-line-height) * var(--base-font-size));
+
+  /* 3 */
+  --bbg-100: calc( (1 - var(--base-mode-indent)) * var(--bbg));
+  --bbg-200: calc( (2 - var(--base-mode-indent)) * var(--bbg));
+  --bbg-300: calc( (3 - var(--base-mode-indent)) * var(--bbg));
+  --bbg-400: calc( (4 - var(--base-mode-indent)) * var(--bbg));
+  --bbg-500: calc( (5 - var(--base-mode-indent)) * var(--bbg));
+  --bbg-600: calc( (6 - var(--base-mode-indent)) * var(--bbg));
+  --bbg-700: calc( (7 - var(--base-mode-indent)) * var(--bbg));
+  --bbg-800: calc( (8 - var(--base-mode-indent)) * var(--bbg));
+  --bbg-900: calc( (9 - var(--base-mode-indent)) * var(--bbg));
+}
+
+/* 4 */
+h1, h2, h3, h4, h5, h6 
+{
+  /* where .15em is synonymous to line height offset */
+  padding-block: 0 .15em;
+}
+
+/* 5a */
+p:has(~ :is(h1, h2, h3, h4, h5, h6)) {
+  margin-block: 0 calc(.25 * var(--bbg));
+}
+
+/* 5b */
+dt,
+:is(h1, h2, h3, h4, h5, h6) ~ p {
+  margin-block: calc(.50 * var(--bbg));
+}
+
+/* 5c */
+p, pre {
+  margin-block: var(--bbg-100);
+}
+
+
+/* on mixes, enforce space irrespective of indent mode */
+
+ol, ul, dl
+{
+  margin-block: var(--bbg);
+}
+
+dd {
+  margin: 0;
+}
+
+table,
+iframe, object, embed, video, audio, img,
+blockquote, fieldset, address, figure, del, ins, a
+{
+  /* 
+    * add .5 to 1 to compensate for 
+    * loss of ascender and descender space 
+    * prior to border 
+    */
+  margin-block: calc(1.5 * var(--bbg));
+}
+
+:is(table,
+iframe, object, embed, video, audio, img,
+blockquote, fieldset, address, figure, del, ins, a) +
+:is(table,
+iframe, object, embed, video, audio, img,
+blockquote, fieldset, address, figure, del, ins, a) 
+{
+  /* 
+    * add .5 again to start to compensate for 
+    * loss of descender space at end of previous element 
+    * due to border to border 
+    */
+  margin-block-start: calc(2 * var(--bbg));
+}
+
+/* 5d */
+summary, legend, th 
+{
+  margin-block: calc(1.5* var(--bbg-100)) var(--bbg-100);
+}
+
+  
+/* 5e */
+
+header, 
+figcaption:first-child 
+{
+  padding: 0 0 var(--bbg-100);
+}
+
+header + *, 
+figcaption:first-child + *
+{
+  margin-block-start: var(--bbg-200);
+}
+
+footer,
+figcaption:last-child 
+{
+  padding: var(--bbg-100) 0 0;
+  margin-block-start: var(--bbg-200);
+}
+
+hgroup + * {
+  margin-block-start: var(--bbg-200);
+}
+
+hr {
+  margin-block: var(--bbg-200);
+}
+
+
+/* 5f */
+
+/* redirect margin to sections */
+h1, h2, h3, h4, h5, h6 {
+  margin-block: 0;
+}
+
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) {
+  margin-block: var(--bbg-300) 0;
+}
+
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) {
+  margin-block: var(--bbg-400) 0;
+}
+
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) {
+  margin-block: var(--bbg-500) 0;
+}
+
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) {
+  margin-block: var(--bbg-600) 0;
+}
+
+:is(section, aside, nav, article) 
+:is(section, aside, nav, article) {
+  margin-block: var(--bbg-700) 0;
+}
+
+:is(section, aside, nav, article) {
+  margin-block: var(--bbg-800);
+}
+
+/* 6 */
+p + p {
+  text-indent: calc(var(--base-mode-indent) * 1em);
+}
+
+:is(hgroup, form, search, fieldset) p + p {
+  text-indent: 0;
+}
+
+/**
+ * 7
+ *
+ * hgroup to contain kickers
+ * bordered cards to shift inline borders to content
+ * list layers to contain their markers
+ */
+hgroup,
+summary, legend, th, dt,
+p, pre, 
+blockquote, fieldset, address, figure, del, ins, a,
+ol, ul, dl
+{
+  margin-inline: auto;
+  max-width: var(--base-line-length);
+}
+
+/* 8 */
+iframe, object, embed, video, audio, img 
+{
+  display: block;
+  margin-inline: auto;
+  max-width: 100%;
+}
+
+/* 9 */
+table {
+  margin-inline: auto;
+}
+
+
+/* 10 */
+svg, math {
+  vertical-align: middle;
+}
+  
+/* 11 */
+ol, ul, dl
+{
+  padding-inline-start: 2em;
+}    
+
+/* 12 */
+/* redirect margin of body to frames */
+body {
+  margin: 0;
+}
+
+dialog {
+  padding: 0;
+}
+  
+main, td, caption {
+  padding-inline: 1rem;
+}
+
+
+
+
+
+
+/* COLOR
+========================================================= */
+
+@supports 
+(color: oklch(0 0 0)) and 
+(color: light-dark(#000, #fff)) 
+{  
+  :root {
+    --base-color-hue: 230;
+  }
+
+  body, dialog, select, input, button, textarea {
+    color: light-dark(
+      oklch(0.45 .02 var(--base-color-hue)),
+      oklch(.72 .01 var(--base-color-hue))
+    );
+    background-color: light-dark(
+      oklch(0.99 0.003 var(--base-color-hue)),
+      oklch(0.20 .03 var(--base-color-hue))
+    );
+  }
+}
+
+
+select, input, button, textarea {
+  accent-color: currentColor;
+}
+
+
+
+
+
+/************************
+** CUSTOMS
+*************************/
+
+
+/* Cued Parts */
+
+header {
+  background-image: repeating-linear-gradient(
+    45deg,
+    currentColor 0, 
+    currentColor 1.4px,
+    transparent 1.4px,
+    transparent 5px
+  );
+  background-size: var(--base-line-length) 5px;
+  background-repeat: no-repeat;
+  background-position: 50% 100%;
+}
+
+figcaption:first-child {
+  background-image: repeating-linear-gradient(
+    45deg,
+    currentColor 0, 
+    currentColor 1.4px,
+    transparent 1.4px,
+    transparent 5px
+  );
+  background-size: 50% 5px;
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+}
+
+hr {
+  background-image: repeating-linear-gradient(
+    90deg,
+    currentColor 0, 
+    currentColor 1px,
+    transparent 1px,
+    transparent 5px
+  );
+  border: 0 none;
+  height: 5px;
+  background-size: var(--base-line-length) 5px;
+  background-position: 50% 100%;
+  background-repeat: no-repeat;
+}
+    
+figcaption:last-child {
+  background-image: repeating-linear-gradient(
+    135deg,
+    currentColor 0, 
+    currentColor 1.4px,
+    transparent 1.4px,
+    transparent 5px
+  );
+  background-size: 50% 5px;
+  background-repeat: no-repeat;
+  background-position: 0% 0%;
+}
+
+footer {
+  background-image: repeating-linear-gradient(
+    135deg,
+    currentColor 0, 
+    currentColor 1.4px,
+    transparent 1.4px,
+    transparent 5px
+  );
+  background-size: var(--base-line-length) 5px;
+  background-repeat: no-repeat;
+  background-position: 50% 0%;
+}
+
+
+    
+/* Multi Kickers */  
+p:has(~ :is(h1, h2, h3, h4, h5, h6)) {
+  width: auto;
+  display: inline-block;
+  margin-inline-end: calc(2*var(--bbg));
+}
+
+
+/* Indented Disclosure */
+summary {
+  text-indent: .3em;
+}
+
+
+/* Bordered Legend */
+legend {
+  border: 1px solid currentColor;
+  padding: 0 .75em .3em;
+  margin-inline: 0;
+}
+
+
+/* Bordered Table Layer*/
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid currentColor;
+}
+
+caption {
+  text-align: start;
+
+  /* border caption to table */
+  border: 1px solid currentColor;
+  border-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Marked Definition List */
+dt, dd {
+  position: relative;
+}
+
+dt::before,
+dd::before {
+  position: absolute;
+  left: -.875em;
+}
+
+dt::before {
+  content: "\203A";
+}
+
+dd::before {
+  content: "\00BB";
+}
+
+
+/* Ordered List */
+
+ol {
+  list-style-type: decimal;
+}
+
+ol ol {
+  list-style-type: lower-alpha;
+}
+
+ol ol ol {
+  list-style-type: lower-roman;
+}
+
+
+/* Marked Cards */
+
+blockquote, fieldset, address, figure,  
+del:has(p, pre, details, fieldset, table, dl),
+ins:has(p, pre, details, fieldset, table, dl),
+a[href]:has(p, pre, details, fieldset, table, dl)
+{
+  border: 1px solid currentColor;
+  padding: 0 calc(1.5 * var(--bbg)) calc(.5 * var(--bbg));
+  position: relative;
+  font-style: normal;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+blockquote::before,
+blockquote::after,
+address::before,
+address::after,
+del:has(p, pre, details, fieldset, table, dl)::before,
+del:has(p, pre, details, fieldset, table, dl)::after,
+ins:has(p, pre, details, fieldset, table, dl)::before,
+ins:has(p, pre, details, fieldset, table, dl)::after,
+a[href]:has(p, pre, details, fieldset, table, dl)::before,
+a[href]:has(p, pre, details, fieldset, table, dl)::after
+{
+  content: "";
+  position: absolute;
+  left: .2em;
+  display: flex;
+  width: .4em;
+  height: .4em;
+  background-color: currentColor;
+}
+
+blockquote::before {
+  top: .2em;
+  clip-path: polygon(77% 96%, 22% 96%, 22% 48%, 53% 4%, 72% 4%, 51% 48%, 77% 48%, 77% 96%);
+}
+
+blockquote::after {
+  bottom: .2em;
+  clip-path: polygon(23% 4%, 78% 4%, 78% 52%, 47% 96%, 28% 96%, 49% 52%, 23% 52%, 23% 4%);
+}
+
+address::before {
+  top: .15em;
+  clip-path: circle(30% at 50% 50%);
+}
+
+address::after {
+  bottom: .15em;
+  clip-path: circle(30% at 50% 50%);
+}
+
+del:has(p, pre, details, fieldset, table, dl)::before {
+  top: .2em;
+  clip-path: polygon(100% 60%, 0% 60%, 0% 40%, 100% 40%, 100% 60%);
+}
+
+del:has(p, pre, details, fieldset, table, dl)::after {
+  bottom: .2em;
+  clip-path: polygon(100% 60%, 0% 60%, 0% 40%, 100% 40%, 100% 60%);
+}
+
+ins:has(p, pre, details, fieldset, table, dl)::before {
+  top: .2em;
+  clip-path: polygon(60% 40%, 100% 40%, 100% 60%, 60% 60%, 60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%, 40% 0%, 60% 0%, 60% 40%);
+}
+
+ins:has(p, pre, details, fieldset, table, dl)::after {
+  bottom: .2em;
+  clip-path: polygon(60% 40%, 100% 40%, 100% 60%, 60% 60%, 60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%, 40% 0%, 60% 0%, 60% 40%);
+}
+
+a[href]:has(p, pre, details, fieldset, table, dl)::before {
+  top: .2em;
+  clip-path: polygon(100% 0%, 100% 70%, 72% 42%, 22% 92%, 8% 78%, 58% 28%, 30% 0%, 100% 0%);
+}
+
+a[href]:has(p, pre, details, fieldset, table, dl)::after {
+  bottom: .2em;
+  clip-path: polygon(100% 0%, 100% 70%, 72% 42%, 22% 92%, 8% 78%, 58% 28%, 30% 0%, 100% 0%);
+}
+
+
+
+/* Scrollable Pres */
+pre {
+  padding: 1em;
+  border: 1px solid currentColor;
+  overflow: auto;
+}
+
+
+
+
+/* Trued Forms */
+
+select,
+button,
+input:not([type]),
+input[type=tel], 
+input[type=url], 
+input[type=text], 
+input[type=date], 
+input[type=week], 
+input[type=time], 
+input[type=file], 
+input[type=email], 
+input[type=month], 
+input[type=color], 
+input[type=reset], 
+input[type=submit], 
+input[type=button], 
+input[type=number], 
+input[type=search], 
+input[type=password], 
+input[type=datetime-local] {
+  border: 1px solid;
+  font: inherit;
+  padding: 0 .5em .15em;
+  height: 2em;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+
+select {
+  padding-inline: .15em 1.5em;
+}
+
+input[type=range] 
+{
+  vertical-align: middle;
+}  
+
+input[type=radio], input[type=checkbox] {
+  width: 1em;
+  height: 1em;
+  font: inherit;
+  vertical-align: -.15em;
+  outline-offset: 0;
+}
+
+textarea {
+  border: 1px solid currentColor;
+  font: inherit;
+  padding: 0 .5em .25em;
+}
+
+
+
+/* Pointed Interractables */
+summary,
+a, 
+label,
+button,
+select,
+input[type=date], 
+input[type=week], 
+input[type=time], 
+input[type=file], 
+input[type=month], 
+input[type=color], 
+input[type=reset], 
+input[type=range], 
+input[type=radio], 
+input[type=button], 
+input[type=submit], 
+input[type=checkbox], 
+input[type=datetime-local] {
+  cursor: pointer;
+}
+
+
+
+
+
