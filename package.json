@@ -1,12 +1,12 @@
 {
-  "name": "base",
+  "name": "@toheeb/base",
   "version": "1.0.0",
-  "description": "",
+  "description": "A classless stylesheet for Personalizable Web Design",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": ["css"],
+  "author": "2",
+  "license": "AGPL-3.0-or-later"
 }
