@@ -193,7 +193,10 @@ dd {
 
 table,
 iframe, object, embed, video, audio, img,
-blockquote, fieldset, address, figure, del, ins, a
+blockquote, fieldset, address, figure, 
+del:has(p, pre, details, fieldset, table, dl),
+ins:has(p, pre, details, fieldset, table, dl),
+a[href]:has(p, pre, details, fieldset, table, dl)
 {
   /* 
     * add .5 to 1 to compensate for 
@@ -203,12 +206,22 @@ blockquote, fieldset, address, figure, del, ins, a
   margin-block: calc(1.5 * var(--bbg));
 }
 
-:is(table,
-iframe, object, embed, video, audio, img,
-blockquote, fieldset, address, figure, del, ins, a) +
-:is(table,
-iframe, object, embed, video, audio, img,
-blockquote, fieldset, address, figure, del, ins, a) 
+:is(
+  table,
+  iframe, object, embed, video, audio, img,
+  blockquote, fieldset, address, figure, 
+  del:has(p, pre, details, fieldset, table, dl),
+  ins:has(p, pre, details, fieldset, table, dl),
+  a[href]:has(p, pre, details, fieldset, table, dl)
+) +
+:is(
+  table,
+  iframe, object, embed, video, audio, img,
+  blockquote, fieldset, address, figure, 
+  del:has(p, pre, details, fieldset, table, dl),
+  ins:has(p, pre, details, fieldset, table, dl),
+  a[href]:has(p, pre, details, fieldset, table, dl)
+) 
 {
   /* 
     * add .5 again to start to compensate for 
@@ -320,7 +333,10 @@ p + p {
 hgroup,
 summary, legend, th, dt,
 p, pre, 
-blockquote, fieldset, address, figure, del, ins, a,
+blockquote, fieldset, address, figure, 
+del:has(p, pre, details, fieldset, table, dl),
+ins:has(p, pre, details, fieldset, table, dl),
+a[href]:has(p, pre, details, fieldset, table, dl),
 ol, ul, dl
 {
   margin-inline: auto;
