@@ -208,7 +208,6 @@ a[href]:has(p, pre, details, fieldset, table, dl)
 
 :is(
   table,
-  iframe, object, embed, video, audio, img,
   blockquote, fieldset, address, figure, 
   del:has(p, pre, details, fieldset, table, dl),
   ins:has(p, pre, details, fieldset, table, dl),
@@ -216,7 +215,6 @@ a[href]:has(p, pre, details, fieldset, table, dl)
 ) +
 :is(
   table,
-  iframe, object, embed, video, audio, img,
   blockquote, fieldset, address, figure, 
   del:has(p, pre, details, fieldset, table, dl),
   ins:has(p, pre, details, fieldset, table, dl),
