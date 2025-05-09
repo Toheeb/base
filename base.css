@@ -698,6 +698,7 @@ button,
   height: 2em;
   vertical-align: middle;
   line-height: 1.2;
+  width: fit-content;
 }
 
 select {
@@ -724,6 +725,7 @@ textarea {
   border: 1px solid currentColor;
   font: inherit;
   padding: 0 .5em .25em;
+  width: fit-content;
 }
 
 
@@ -753,6 +755,13 @@ select,
 }
 
 
+label:has(textarea, select, input:not([type=checkbox], [type=radio], [type=range])) {
+  display: grid;
+  margin-block-start: calc(.5 * var(--bbg))
+}
 
-
+label:has(textarea, select, input:not([type=checkbox], [type=radio], [type=range])) + button {
+  display: block;
+  margin-block-start: calc(1.7 * var(--bbg))
+}
 
