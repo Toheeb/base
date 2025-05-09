@@ -672,24 +672,26 @@ pre {
 
 select,
 button,
-input:not([type]),
-input[type=tel], 
-input[type=url], 
-input[type=text], 
-input[type=date], 
-input[type=week], 
-input[type=time], 
-input[type=file], 
-input[type=email], 
-input[type=month], 
-input[type=color], 
-input[type=reset], 
-input[type=submit], 
-input[type=button], 
-input[type=number], 
-input[type=search], 
-input[type=password], 
-input[type=datetime-local] {
+:where(
+  input:not([type]),
+  input[type=tel], 
+  input[type=url], 
+  input[type=text], 
+  input[type=date], 
+  input[type=week], 
+  input[type=time], 
+  input[type=file], 
+  input[type=email], 
+  input[type=month], 
+  input[type=color], 
+  input[type=reset], 
+  input[type=submit], 
+  input[type=button], 
+  input[type=number], 
+  input[type=search], 
+  input[type=password], 
+  input[type=datetime-local]
+) {
   border: 1px solid;
   font: inherit;
   padding: 0 .5em .15em;
@@ -707,7 +709,10 @@ input[type=range]
   vertical-align: middle;
 }  
 
-input[type=radio], input[type=checkbox] {
+:where(
+  input[type=radio], 
+  input[type=checkbox] 
+) {
   width: 1em;
   height: 1em;
   font: inherit;
@@ -729,19 +734,21 @@ a,
 label,
 button,
 select,
-input[type=date], 
-input[type=week], 
-input[type=time], 
-input[type=file], 
-input[type=month], 
-input[type=color], 
-input[type=reset], 
-input[type=range], 
-input[type=radio], 
-input[type=button], 
-input[type=submit], 
-input[type=checkbox], 
-input[type=datetime-local] {
+:where(
+  input[type=date], 
+  input[type=week], 
+  input[type=time], 
+  input[type=file], 
+  input[type=month], 
+  input[type=color], 
+  input[type=reset], 
+  input[type=range], 
+  input[type=radio], 
+  input[type=button], 
+  input[type=submit], 
+  input[type=checkbox], 
+  input[type=datetime-local]
+) {
   cursor: pointer;
 }
 
