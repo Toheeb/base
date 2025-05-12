@@ -380,6 +380,11 @@ main, td, caption {
   padding-inline: 1rem;
 }
 
+/* 13 */
+[hidden] {
+  display: none;
+}
+
 
 
 
