@@ -398,7 +398,9 @@ main, td, caption {
 }
 
 
-
+:where(a[href] + a[href]) {
+  margin-inline-start: 1em;
+}
 
 
 
@@ -407,6 +409,10 @@ main, td, caption {
 
 * {
   outline-color: inherit;
+}
+
+a {
+  color: inherit;
 }
 
 @supports 
