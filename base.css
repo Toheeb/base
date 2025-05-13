@@ -16,6 +16,10 @@
   box-sizing: border-box;
 }
 
+::picker(select) {
+  /* 1 */
+  border-radius: var(--base-corner-radius);
+}
 
 
 
@@ -112,6 +116,14 @@ small, ::marker
       var(--base-line-height) / var(--bfs)      
     )
   );
+}
+
+/* 4b */
+select::picker-icon {
+  --bfs: var(--bfs-075);
+  font-size: calc(var(--bfs) * 1rem);
+  line-height: 2.2em;
+  transform-origin: 50% 55%;
 }
 
 /* 5 */
@@ -411,6 +423,24 @@ main, td, caption {
       oklch(0.20 .03 var(--base-color-hue))
     );
   }
+
+  ::picker(select) {
+    color: light-dark(
+      oklch(0.45 .02 var(--base-color-hue)),
+      oklch(.72 .01 var(--base-color-hue))
+    );
+    background-color: light-dark(
+      oklch(0.99 0.003 var(--base-color-hue)),
+      oklch(0.20 .03 var(--base-color-hue))
+    );
+  }
+
+  option:hover {
+    background-color: light-dark(
+      oklch(0.95 0.003 var(--base-color-hue)),
+      oklch(0.25 .03 var(--base-color-hue))
+    );
+  }
 }
 
 
@@ -675,7 +705,6 @@ pre {
 
 /* Trued Forms */
 
-select,
 button,
 :where(
   input:not([type]),
@@ -706,8 +735,48 @@ button,
   width: fit-content;
 }
 
+select,
+::picker(select) {
+  appearance: base-select;
+}
+
 select {
-  padding-inline: .15em 1.5em;
+  font: inherit;
+  height: 2em;
+  padding: 0 .5em .2em .3em;
+  width: fit-content;
+  gap: 2em;
+}
+
+select::picker-icon {
+  transition: .4s rotate;
+}
+
+select:open::picker-icon {
+  rotate: 180deg;
+}
+
+option {
+  height: 2.5em;
+  padding: .3em .75em .45em;
+  flex-flow: row-reverse;
+  justify-content: space-between;
+  gap: 3em;
+}
+
+::picker(select) {
+  opacity: 0;
+  transition: all .25s allow-discrete;
+}
+
+::picker(select):popover-open {
+  opacity: 1;
+}
+
+@starting-style {
+  ::picker(select):popover-open {
+    opacity: 0;
+  }
 }
 
 input[type=range] 
