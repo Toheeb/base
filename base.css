@@ -208,7 +208,7 @@ iframe, object, embed, video, audio, img,
 blockquote, fieldset, address, figure, 
 del:has(p, pre, details, fieldset, table, dl),
 ins:has(p, pre, details, fieldset, table, dl),
-a[href]:has(p, pre, details, fieldset, table, dl)
+:where(a[href]:has(p, pre, details, fieldset, table, dl))
 {
   /* 
     * add .5 to 1 to compensate for 
@@ -223,14 +223,14 @@ a[href]:has(p, pre, details, fieldset, table, dl)
   blockquote, fieldset, address, figure, 
   del:has(p, pre, details, fieldset, table, dl),
   ins:has(p, pre, details, fieldset, table, dl),
-  a[href]:has(p, pre, details, fieldset, table, dl)
+  :where(a[href]:has(p, pre, details, fieldset, table, dl))
 ) +
 :is(
   table,
   blockquote, fieldset, address, figure, 
   del:has(p, pre, details, fieldset, table, dl),
   ins:has(p, pre, details, fieldset, table, dl),
-  a[href]:has(p, pre, details, fieldset, table, dl)
+  :where(a[href]:has(p, pre, details, fieldset, table, dl))
 ) 
 {
   /* 
@@ -346,7 +346,7 @@ p, pre,
 blockquote, fieldset, address, figure, 
 del:has(p, pre, details, fieldset, table, dl),
 ins:has(p, pre, details, fieldset, table, dl),
-a[href]:has(p, pre, details, fieldset, table, dl),
+:where(a[href]:has(p, pre, details, fieldset, table, dl)),
 ol, ul, dl
 {
   margin-inline: auto;
@@ -620,7 +620,7 @@ ol ol ol {
 blockquote, fieldset, address, figure,  
 del:has(p, pre, details, fieldset, table, dl),
 ins:has(p, pre, details, fieldset, table, dl),
-a[href]:has(p, pre, details, fieldset, table, dl)
+:where(a[href]:has(p, pre, details, fieldset, table, dl))
 {
   border: 1px solid currentColor;
   padding: 0 calc(1.5 * var(--bbg)) calc(.5 * var(--bbg));
@@ -639,8 +639,8 @@ del:has(p, pre, details, fieldset, table, dl)::before,
 del:has(p, pre, details, fieldset, table, dl)::after,
 ins:has(p, pre, details, fieldset, table, dl)::before,
 ins:has(p, pre, details, fieldset, table, dl)::after,
-a[href]:has(p, pre, details, fieldset, table, dl)::before,
-a[href]:has(p, pre, details, fieldset, table, dl)::after
+:where(a[href]:has(p, pre, details, fieldset, table, dl))::before,
+:where(a[href]:has(p, pre, details, fieldset, table, dl))::after
 {
   content: "";
   position: absolute;
@@ -691,12 +691,12 @@ ins:has(p, pre, details, fieldset, table, dl)::after {
   clip-path: polygon(60% 40%, 100% 40%, 100% 60%, 60% 60%, 60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%, 40% 0%, 60% 0%, 60% 40%);
 }
 
-a[href]:has(p, pre, details, fieldset, table, dl)::before {
+:where(a[href]:has(p, pre, details, fieldset, table, dl))::before {
   top: .2em;
   clip-path: polygon(100% 0%, 100% 70%, 72% 42%, 22% 92%, 8% 78%, 58% 28%, 30% 0%, 100% 0%);
 }
 
-a[href]:has(p, pre, details, fieldset, table, dl)::after {
+:where(a[href]:has(p, pre, details, fieldset, table, dl))::after {
   bottom: .2em;
   clip-path: polygon(100% 0%, 100% 70%, 72% 42%, 22% 92%, 8% 78%, 58% 28%, 30% 0%, 100% 0%);
 }
