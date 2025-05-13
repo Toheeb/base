@@ -405,6 +405,10 @@ main, td, caption {
 /* COLOR
 ========================================================= */
 
+* {
+  outline-color: inherit;
+}
+
 @supports 
 (color: oklch(0 0 0)) and 
 (color: light-dark(#000, #fff)) 
