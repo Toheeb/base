@@ -251,19 +251,19 @@ summary, legend, th
 /* 5e */
 
 header, 
-figcaption:first-child 
+:where(figcaption:first-child) 
 {
   padding: 0 0 var(--bbg);
 }
 
 header + *, 
-figcaption:first-child + *
+:where(figcaption:first-child + *)
 {
   margin-block-start: var(--bbg-200);
 }
 
 footer,
-figcaption:last-child 
+:where(figcaption:last-child) 
 {
   padding: var(--bbg) 0 0;
   margin-block-start: var(--bbg-200);
@@ -482,7 +482,7 @@ header {
   background-position: 50% 100%;
 }
 
-figcaption:first-child {
+:where(figcaption:first-child) {
   background-image: repeating-linear-gradient(
     45deg,
     currentColor 0, 
@@ -510,7 +510,7 @@ hr {
   background-repeat: no-repeat;
 }
     
-figcaption:last-child {
+:where(figcaption:last-child) {
   background-image: repeating-linear-gradient(
     135deg,
     currentColor 0, 
