@@ -398,7 +398,7 @@ main, td, caption {
 }
 
 
-:where(a[href] + a[href]) {
+:where(a[href]:not(:has(p, pre, details, fieldset, table, dl)) + a[href]:not(:has(p, pre, details, fieldset, table, dl))) {
   margin-inline-start: 1em;
 }
 
