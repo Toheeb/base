@@ -127,7 +127,7 @@ class BaseSettings extends HTMLElement {
         ._bs form {
           display: grid;
           width: 100%;
-          gap: var(--bbg);
+          gap: calc(.5 * var(--bbg));
         }
     
         ._bs p {
@@ -135,7 +135,7 @@ class BaseSettings extends HTMLElement {
           display: flex;
           flex-flow: row wrap;
           justify-content: space-between;
-          gap: calc(.75 * var(--bbg));
+          gap: calc(.25 * var(--bbg)) calc(.75 * var(--bbg));
         }
     
         ._bs .fields label:not([hidden]) {
@@ -148,7 +148,9 @@ class BaseSettings extends HTMLElement {
           font-size: calc(var(--bfs-075) * 1rem);
         }
     
-        ._bs .fields input {
+        ._bs .fields input, 
+        ._bs .fields select 
+        {
           width: 100%;
         }
       </style>
