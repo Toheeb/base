@@ -5,7 +5,6 @@
 /* 1 */
 :root {
   --base-corner-radius: .2em;
-  --base-mode-doc: 1;
 }
 
 *, ::before, ::after 
@@ -623,8 +622,8 @@ del:has(p, pre, details, fieldset, table, dl),
 ins:has(p, pre, details, fieldset, table, dl),
 :where(a[href]:has(p, pre, details, fieldset, table, dl))
 {
-  border: calc(1px * var(--base-doc-mode)) solid currentColor;
-  padding: 0 calc(1.5 * var(--bbg) * var(--base-doc-mode)) calc(.5 * var(--bbg) * var(--base-doc-mode));
+  border: 1px solid currentColor;
+  padding: 0 calc(1.5 * var(--bbg)) calc(.5 * var(--bbg));
   position: relative;
   font-style: normal;
   display: block;
@@ -647,8 +646,8 @@ ins:has(p, pre, details, fieldset, table, dl)::after,
   position: absolute;
   left: .2em;
   display: flex;
-  width: var(.4em * var(--base-doc-mode));
-  height: var(.4em * var(--base-doc-mode));
+  width: .4em;
+  height: .4em;
   background-color: currentColor;
 }
 
