@@ -253,7 +253,7 @@ summary, legend, th
 header, 
 figcaption:first-child 
 {
-  padding: 0 0 var(--bbg-100);
+  padding: 0 0 var(--bbg);
 }
 
 header + *, 
@@ -265,7 +265,7 @@ figcaption:first-child + *
 footer,
 figcaption:last-child 
 {
-  padding: var(--bbg-100) 0 0;
+  padding: var(--bbg) 0 0;
   margin-block-start: var(--bbg-200);
 }
 
@@ -389,7 +389,7 @@ dialog {
 }
   
 main, td, caption {
-  padding-inline: 1rem;
+  padding: .5rem 1rem;
 }
 
 /* 13 */
