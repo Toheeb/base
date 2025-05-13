@@ -833,12 +833,12 @@ select,
 }
 
 
-label:has(textarea, select, input:not([type=checkbox], [type=radio], [type=range])) {
+:where(label:has(textarea, select, input:not([type=checkbox], [type=radio], [type=range]))) {
   display: grid;
   margin-block-start: calc(.5 * var(--bbg))
 }
 
-label:has(textarea, select, input:not([type=checkbox], [type=radio], [type=range])) + button {
+:where(label:has(textarea, select, input:not([type=checkbox], [type=radio], [type=range])) + button) {
   display: block;
   margin-block-start: calc(1.7 * var(--bbg))
 }
