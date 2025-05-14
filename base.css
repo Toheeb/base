@@ -398,8 +398,19 @@ main, td, caption {
 }
 
 
-:where(a[href]:not(:has(p, pre, details, fieldset, table, dl)) + a[href]:not(:has(p, pre, details, fieldset, table, dl))) {
-  margin-inline-start: 1em;
+:where(a[href]:not(:has(p, pre, details, fieldset, table, dl))) {
+  text-decoration: none;
+}
+
+:where(a[href]:not(:has(p, pre, details, fieldset, table, dl))):hover {
+  text-decoration: underline;
+}
+
+:where(a[href]:not(:has(p, pre, details, fieldset, table, dl)))::after {
+  content: "\000bb";
+  vertical-align: top;
+  line-height: 1;
+  padding: 0 .1em;
 }
 
 
