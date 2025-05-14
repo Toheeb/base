@@ -158,7 +158,7 @@ class BaseSettings extends HTMLElement {
     `;
 
     document.addEventListener("click", e => {
-      if (e.target.classList.contains("base-settings")) {
+      if (e.target.closest(".base-settings")) {
         this.querySelector("dialog").showModal();
       }
     })
