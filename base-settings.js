@@ -337,20 +337,25 @@ class BaseSettings extends HTMLElement {
       
       // Color Scheme
       {
-        const color_scheme = document.querySelector("meta[name=color-scheme]")?.content.split(" ");
-        const node_color_scheme = this.querySelector("#base-color-scheme");
-        const has_light = color_scheme.includes("light");
-        const has_dark = color_scheme.includes("dark");
+        const color_scheme = document.querySelector("meta[name=color-scheme]");
+        const label_color_scheme = this.querySelector("#base-color-scheme").closest("label");
 
-        if (has_light && has_dark) {
-          node_color_scheme.value = "";
-        } else if (has_light) {
-          node_color_scheme.value = "light";
-        } else if (has_dark) {
-          node_color_scheme.value = "dark";
+        if (color_scheme) {
+          const content = color_scheme.content.split(" ");
+          const node_color_scheme = this.querySelector("#base-color-scheme");
+          const has_light = content.includes("light");
+          const has_dark = content.includes("dark");
+
+          if (has_light && has_dark) {
+            node_color_scheme.value = "";
+            label_color_scheme.hidden = false;
+          } else {
+            label_color_scheme.hidden = true;
+          }
         } else {
-          node_color_scheme.value = "";
+          label_color_scheme.hidden = true;
         }
+
       }
     }
 
