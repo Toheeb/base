@@ -122,8 +122,9 @@ small, ::marker
 select::picker-icon {
   --bfs: var(--bfs-075);
   font-size: calc(var(--bfs) * 1rem);
-  line-height: 2.2em;
-  transform-origin: 50% 55%;
+  /* line-height: 2.2em; */
+  /* line-height: inherit */
+  /* transform-origin: 50%; */
 }
 
 /* 5 */
@@ -761,16 +762,23 @@ select,
   appearance: base-select;
 }
 
+
 select {
   font: inherit;
-  height: 2em;
-  padding: 0 .5em .2em .3em;
   width: fit-content;
   gap: 2em;
+  padding: 0 .3em .15em .3em;
+
+  /* Use lineheight over height to align ::picker to center. Sum to 2em considering padding bottom and border top & bottom */
+  line-height: 1.725em;
 }
 
 select::picker-icon {
   transition: .4s rotate;
+
+  /* avoid cutoff upon clicked */
+  transform-origin: 40% 50%;
+  transform: translateX(-1px);
 }
 
 select:open::picker-icon {
