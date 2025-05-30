@@ -119,6 +119,7 @@ class BaseSettings extends HTMLElement {
     
         ._bs button[type=submit] {
           display: flex;
+          justify-content: center;
           border: 0;
           margin: auto;
           padding: .25em;
@@ -136,6 +137,10 @@ class BaseSettings extends HTMLElement {
           flex-flow: row wrap;
           justify-content: space-between;
           gap: calc(.25 * var(--bbg)) calc(.75 * var(--bbg));
+        }
+
+        ._bs .modes {
+          margin-top: var(--bbg);
         }
     
         ._bs .fields label:not([hidden]) {
