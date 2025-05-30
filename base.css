@@ -768,6 +768,7 @@ select {
   width: fit-content;
   gap: 2em;
   padding: 0 .3em .15em .3em;
+  align-items: center;
 
   /* Use lineheight over height to align ::picker to center. Sum to 2em considering padding bottom and border top & bottom */
   line-height: 1.725em;
