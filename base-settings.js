@@ -120,6 +120,7 @@ class BaseSettings extends HTMLElement {
         ._bs button[type=submit] {
           display: flex;
           justify-content: center;
+          align-items: center;
           border: 0;
           margin: auto;
           padding: .25em;
