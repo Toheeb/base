@@ -208,16 +208,24 @@ class BaseSettings extends HTMLElement {
 
       // Indent Mode
       {
-        const mode_indent = root_styles.getPropertyValue("--base-mode-indent").trim();
         const label_mode_indent = this.querySelector("#base-mode-indent").closest("label");
+        const has_other_sheet = doc_sheets.some(sheet => sheet.title?.toLowerCase()?.trim() != "base");
+        const mode_indent = root_styles.getPropertyValue("--base-mode-indent").trim();
         
-        if (mode_indent) {
-          label_mode_indent.hidden = false;
-          this.querySelector("#base-mode-indent").checked = parseInt(mode_indent) === 1;
-        } else {
+        if (has_other_sheet) {
           label_mode_indent.hidden = true;
+          mode_indent.checked = false;
+        } else {
+
+          if (mode_indent) {
+            label_mode_indent.hidden = false;
+            this.querySelector("#base-mode-indent").checked = parseInt(mode_indent) === 1;
+          } else {
+            label_mode_indent.hidden = true;
+          }
         }
       }
+      
       
       // Font Family
       {
