@@ -230,25 +230,27 @@ class BaseSettings extends HTMLElement {
       // Font Family
       {
         const font_family = root_styles.getPropertyValue("--base-font-family").trim();
+        const font_family_toggle = root_styles.getPropertyValue("--base-font-family-toggle").trim();
         const label_font_family = this.querySelector("#base-font-family").closest("label");
-
-        if (font_family) {
+        
+        if (parseInt(font_family_toggle) == 0) {
+          label_font_family.hidden = true;
+        } else {
           label_font_family.hidden = false;
-
+  
           const def_typefaces = ["serif", "sans-serif", "cursive", "system-ui", "monospace"];
-
+  
           if (def_typefaces.includes(font_family.toLowerCase())) {
           } else {
             const option = document.createElement("option");
-
+  
             option.value = font_family;
             option.textContent = font_family;
             this.querySelector("#base-font-family").append(option);
           }
           
           this.querySelector("#base-font-family").value = font_family;
-        } else {
-          label_font_family.hidden = true;
+
         }
 
       }
@@ -256,23 +258,29 @@ class BaseSettings extends HTMLElement {
       // Font Size
       {
         const font_size = root_styles.getPropertyValue("--base-font-size").trim();
+        const font_size_toggle = root_styles.getPropertyValue("--base-font-size-toggle").trim();
         const label_font_size = this.querySelector("#base-font-size").closest("label");
         const positive_numbers = /^\d+\.?\d*$/;
 
-        if (positive_numbers.test(font_size)) {
-          label_font_size.hidden = false;
-          this.querySelector("#base-font-size").value = font_size;
-        } else {
+        if (parseInt(font_size_toggle) == 0) {
           label_font_size.hidden = true;
+        } else {
+          if (positive_numbers.test(font_size)) {
+            label_font_size.hidden = false;
+            this.querySelector("#base-font-size").value = font_size;
+          }
         }
       }
 
       // Font Scale
       {
         const font_scale = root_styles.getPropertyValue("--base-font-scale").trim();
+        const font_scale_toggle = root_styles.getPropertyValue("--base-font-scale-toggle").trim();
         const label_font_scale = this.querySelector("#base-font-scale").closest("label");
-
-        if (font_scale) {
+        
+        if (parseInt(font_scale_toggle) == 0) {
+          label_font_scale.hidden = true;
+        } else {
           label_font_scale.hidden = false;
 
           const scale_set = [1.067, 1.125, 1.2, 1.25, 1.333, 1.414, 1.5, 1.618];
@@ -287,8 +295,6 @@ class BaseSettings extends HTMLElement {
           }
           
           this.querySelector("#base-font-scale").value = font_scale;
-        } else {
-          label_font_scale.hidden = true;
         }
 
       }
@@ -296,41 +302,50 @@ class BaseSettings extends HTMLElement {
       // Line Height
       {
         const line_height = root_styles.getPropertyValue("--base-line-height").trim();
+        const line_height_toggle = root_styles.getPropertyValue("--base-line-height-toggle").trim();
         const label_line_height = this.querySelector("#base-line-height").closest("label");
         const positive_numbers = /^\d*\.?\d*$/;
 
-        if (positive_numbers.test(line_height)) {
-          label_line_height.hidden = false;
-          this.querySelector("#base-line-height").value = line_height;
-        } else {
+        if (parseInt(line_height_toggle) == 0) {
           label_line_height.hidden = true;
+        } else {
+          if (positive_numbers.test(line_height)) {
+            label_line_height.hidden = false;
+            this.querySelector("#base-line-height").value = line_height;
+          } 
         }
       }
 
       // Line Length
       {
         const line_length = root_styles.getPropertyValue("--base-line-length").trim();
+        const line_length_toggle = root_styles.getPropertyValue("--base-line-length-toggle").trim();
         const label_line_length = this.querySelector("#base-line-length").closest("label");
 
-        if (parseFloat(line_length)) {
-          label_line_length.hidden = false;
-          this.querySelector("#base-line-length").value = parseFloat(line_length);
-        } else {
+        if (parseInt(line_length_toggle) == 0) {
           label_line_length.hidden = true;
+        } else {
+          if (parseFloat(line_length)) {
+            label_line_length.hidden = false;
+            this.querySelector("#base-line-length").value = parseFloat(line_length);
+          } 
         }
       }
       
       // Block Gap
       {
         const block_gap = root_styles.getPropertyValue("--base-block-gap").trim();
+        const block_gap_toggle = root_styles.getPropertyValue("--base-block-gap-toggle").trim();
         const label_block_gap = this.querySelector("#base-block-gap").closest("label");
         const positive_numbers = /^\d*\.?\d*$/;
 
-        if (positive_numbers.test(block_gap)) {
-          label_block_gap.hidden = false;
-          this.querySelector("#base-block-gap").value = block_gap;
-        } else {
+        if (parseInt(block_gap_toggle) == 0) {
           label_block_gap.hidden = true;
+        } else {
+          if (positive_numbers.test(block_gap)) {
+            label_block_gap.hidden = false;
+            this.querySelector("#base-block-gap").value = block_gap;
+          } 
         }
       }
       
