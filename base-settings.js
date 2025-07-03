@@ -214,7 +214,7 @@ class BaseSettings extends HTMLElement {
         
         if (has_other_sheet) {
           label_mode_indent.hidden = true;
-          mode_indent.checked = false;
+          this.querySelector("#base-mode-indent").checked = false;
         } else {
 
           if (mode_indent) {
