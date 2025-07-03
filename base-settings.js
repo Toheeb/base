@@ -86,7 +86,7 @@ class BaseSettings extends HTMLElement {
         </main>
       </dialog>
       <style>
-        ._bs {
+        :where(._bs) {
           box-shadow: 
             -0px -0px 1px oklch(from currentColor l c h / .01),
             -2px -2px 3px oklch(from currentColor l c h / .03),
@@ -105,7 +105,7 @@ class BaseSettings extends HTMLElement {
         (color: oklch(0 0 0)) and 
         (color: light-dark(#000, #fff)) 
         { 
-          ._bs {
+          :where(._bs) {
             background-color: light-dark(
               oklch(1 0.003 var(--base-color-hue)),
               oklch(0.22 .03 var(--base-color-hue))
@@ -113,11 +113,11 @@ class BaseSettings extends HTMLElement {
           }
         }
     
-        dialog::backdrop {
+        :where(dialog::backdrop) {
           background: transparent;
         }
     
-        ._bs button[type=submit] {
+        :where(._bs button[type=submit]) {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -126,13 +126,13 @@ class BaseSettings extends HTMLElement {
           padding: .25em;
         }
     
-        ._bs form {
+        :where(._bs form) {
           display: grid;
           width: 100%;
           gap: calc(.5 * var(--bbg));
         }
     
-        ._bs p {
+        :where(._bs p) {
           width: 100%;
           display: flex;
           flex-flow: row wrap;
@@ -140,22 +140,22 @@ class BaseSettings extends HTMLElement {
           gap: calc(.25 * var(--bbg)) calc(.75 * var(--bbg));
         }
 
-        ._bs .modes {
+        :where(._bs .modes) {
           margin-top: var(--bbg);
         }
     
-        ._bs .fields label:not([hidden]) {
+        :where(._bs .fields label:not([hidden])) {
           display: grid;
           gap: .25em;
           flex: 1 1 calc(50% - calc(.75 * var(--bbg)));
         }
     
-        ._bs .fields span {
+        :where(._bs .fields span) {
           font-size: calc(var(--bfs-075) * 1rem);
         }
     
-        ._bs .fields input, 
-        ._bs .fields select 
+        :where(._bs .fields input), 
+        :where(._bs .fields select) 
         {
           width: 100%;
         }
