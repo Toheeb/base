@@ -429,6 +429,7 @@ main, td, caption {
 
 :where(a[href]:not(:has(p, pre, details, fieldset, table, dl))):hover {
   text-decoration: underline;
+  text-decoration-thickness: 1px;
 }
 
 :where(a[href]:not(:has(p, pre, details, fieldset, table, dl)))::after {
