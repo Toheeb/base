@@ -894,3 +894,8 @@ select,
   margin-block-start: calc(1.7 * var(--bbg))
 }
 
+
+summary {
+  font-weight: bold;
+  list-style-position: outside;
+}
