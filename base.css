@@ -366,6 +366,7 @@ p + p {
  * list layers to contain their markers
  */
 hgroup,
+h1, h2, h3, h4, h5, h6,
 summary, legend, th, dt,
 p, pre, 
 blockquote, fieldset, address, figure, 
