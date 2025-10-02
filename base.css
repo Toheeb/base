@@ -64,7 +64,7 @@ summary, legend, dt, th
 }
 
 /* 3c */
-:is(h1, h2, h3, h4, h5, h6) ~ p 
+hgroup :is(h1, h2, h3, h4, h5, h6) ~ p 
 {
   --bfs: var(--bfs-200);
 }
@@ -134,7 +134,7 @@ p {
 
 /* 6 */
 h1, h2, h3, h4, h5, h6, 
-:is(h1, h2, h3, h4, h5, h6) ~ p,
+hgroup :is(h1, h2, h3, h4, h5, h6) ~ p,
 summary, legend, dt, th 
 {
   text-wrap: balance;
@@ -183,7 +183,7 @@ p:has(~ :is(h1, h2, h3, h4, h5, h6)) {
 
 /* 5b */
 dt,
-:is(h1, h2, h3, h4, h5, h6) ~ p {
+hgroup :is(h1, h2, h3, h4, h5, h6) ~ p {
   margin-block: calc(.50 * var(--bbg));
 }
 
