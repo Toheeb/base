@@ -901,3 +901,7 @@ summary {
   font-weight: bold;
   list-style-position: outside;
 }
+
+b {
+  font-weight: 500;
+}
