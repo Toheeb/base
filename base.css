@@ -905,3 +905,7 @@ summary {
 b {
   font-weight: 500;
 }
+
+a:has(+a) {
+  margin-inline-start: 1ch;
+}
