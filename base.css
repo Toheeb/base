@@ -394,8 +394,14 @@ table {
 
 
 /* 10 */
+
+/*
+ * full line height centers the SVG by default.
+ * Aligning to bottom avoids overflow at line block 
+ */
 svg, math {
-  vertical-align: middle;
+  height: 1lh;
+  vertical-align: bottom;
 }
   
 /* 11 */
