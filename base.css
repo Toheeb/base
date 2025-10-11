@@ -597,9 +597,9 @@ p:has(~ :is(h1, h2, h3, h4, h5, h6)) {
 
 
 /* Indented Disclosure */
-summary {
+/* summary {
   text-indent: .3em;
-}
+} */
 
 
 /* Bordered Legend */
