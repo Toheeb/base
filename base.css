@@ -656,11 +656,11 @@ ol {
   list-style-type: decimal;
 }
 
-ol ol {
+:where(ol ol) {
   list-style-type: lower-alpha;
 }
 
-ol ol ol {
+:where(ol ol ol) {
   list-style-type: lower-roman;
 }
 
