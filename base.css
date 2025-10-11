@@ -243,7 +243,12 @@ ins:has(p, pre, details, fieldset, table, dl),
 }
 
 /* 5d */
-summary, legend, th 
+
+details {
+  margin-block: calc(1.5* var(--bbg-100));
+}
+
+legend, th 
 {
   margin-block: calc(1.5* var(--bbg-100)) var(--bbg-100);
 }
