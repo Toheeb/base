@@ -875,9 +875,9 @@ textarea {
 /* Pointed Interractables */
 summary,
 a, 
-label,
-button,
-select,
+label:not([disabled]),
+button:not([disabled]),
+select:not([disabled]),
 :where(
   input[type=date], 
   input[type=week], 
