@@ -1,12 +1,12 @@
 {
   "name": "@toheeb/base",
-  "version": "1.7.10",
-  "description": "A classless stylesheet for Personalizable Web Design",
+  "version": "2.0.0",
+  "description": "The web's first multipurpose base stylesheet, with the most semantic rules, for complete customization and personalization.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["css"],
   "author": "2",
-  "license": "AGPL-3.0-or-later"
+  "license": "See license in license.md"
 }

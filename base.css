@@ -1,922 +1,1541 @@
 
-/* UNIVERSAL
-    ========================================================= */
+/****************************************************
+ * 
+ * __________________________________________________ 
+ * 
+    1.  
+      On the root element, the entry point of the document, set options all descendants can inherit
+
+      a.
+        Use native properties for font family and font size options.
+
+        For font size, CSS has font relative units to create variations from the root or parent value.
+
+        For font family, it's useless to use custom property. Its value, a string value, can't create variations. Variation of font family would be by, if possible, using font variant alternatives.
+
+      b.
+        Use custom property for line height. This maintain unitless value while creating automatic variations for blocks.
+
+      c.
+        Use custom property for psueudo content to enable fallback trick for its native counterpart
+
+      d.
+        Use custom property for the others due to lack of native properties
+
+    2.  
+      Prevent adjustments of font size orientation changes in iOS
+
+    3.  
+      Remove padding, remove margin, and set box model to border box on all elements.
+
+      On all elements, remove padding and margin; then use box model of border box
+ *
+*****************************************************/
+
 
 /* 1 */
 :root {
-  --base-corner-radius: .2em;
-}
 
-*, ::before, ::after 
-{
-  /* 1 */
-  border-radius: var(--base-corner-radius);
-
-  /* 2 */
-  box-sizing: border-box;
-}
-
-::picker(select) {
-  /* 1 */
-  border-radius: var(--base-corner-radius);
-}
-
-
-
-/* TYPOGRAPHY
-   ========================================================= */
-
-:root {
-
-  /* 1 */
-  --base-font-size: 1;
-  --base-font-scale: 1.2;
-  --base-line-height: .7;
-  --base-font-family: system-ui;
+  /* 1a */
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
   
+  /* 1b */
+  --line-height: 1.7;
+  
+  /* 1c */
+  --content: initial;
+
+  /* 1d */
+  --line-length: 36rem;
+  --line-lead: calc((1lh - 1ex) * .5);
+  --font-scale: 1.2;
+  --color-hue: 120;
+  --lh-pad: .25em;
+  --border-width: 1;
+
+  --background-color: light-dark(
+    oklch(.99 0.0046 var(--color-hue)), 
+    oklch(.2 .02 var(--color-hue))
+  );
+
+  --foreground-color: light-dark(
+    oklch(.2 .0246 var(--color-hue)), 
+    oklch(.8 .0046 var(--color-hue))
+  );
+
+  --border-color: light-dark(
+    color-mix(in srgb, currentColor 10%, transparent 100%),
+    color-mix(in srgb, currentColor 20%, transparent 100%)
+  );
+
   /* 2 */
-  --bfs-050: (var(--bfs-100) / (var(--base-font-scale) * var(--base-font-scale)));
-  --bfs-075: (var(--bfs-100) / (var(--base-font-scale)));
-  --bfs-100: (var(--base-font-size));
-  --bfs-200: (var(--bfs-100) * var(--base-font-scale));
-  --bfs-300: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale));
-  --bfs-400: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));
-  --bfs-500: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));
-  --bfs-600: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));
-  --bfs-700: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));
-  --bfs-800: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));  
-  --bfs-900: (var(--bfs-100) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale) * var(--base-font-scale));  
+  -webkit-text-size-adjust: 100%;
+}  
+
+/* 3 */
+*
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: inherit;
+  font: inherit;
 }
+
+
+
+/****************************************************
+ * Font Size
+ * __________________________________________________ 
+ *
+    On each block, in order of preheadings, paragraphs and titles, postheadings, heading level 6 to 1, apply a font size, progressively. 
+
+    Use em units to allow containers bump up or down font sizes independent of another container.
+
+    Like the paragraphs, the main content blocks, html, the root container, uses the same font size to set font size on other containers for their psuedo elements — out-of-block contents. [a]
+ *
+*****************************************************/
+
+hgroup > p:has(~ :is(h1, h2, h3, h4, h5, h6))
+{
+  font-size: calc(pow(var(--font-scale), -1) * 1em);
+}
+
+p, pre,
+dt, th, legend, summary,
+
+/* a */
+html
+{
+  font-size: calc(pow(var(--font-scale), 0) * 1em);
+}
+
+hgroup > :is(h1, h2, h3, h4, h5, h6) ~ p
+{
+  font-size: calc(pow(var(--font-scale), 1) * 1em);
+}
+
+h6
+{
+  font-size: calc(pow(var(--font-scale), 2) * 1em);
+}
+
+h5
+{
+  font-size: calc(pow(var(--font-scale), 3) * 1em);
+}
+
+h4
+{
+  font-size: calc(pow(var(--font-scale), 4) * 1em);
+}
+
+h3
+{
+  font-size: calc(pow(var(--font-scale), 5) * 1em);
+}
+
+h2
+{
+  font-size: calc(pow(var(--font-scale), 6) * 1em);
+}
+
+h1
+{
+  font-size: calc(pow(var(--font-scale), 7) * 1em);
+}
+
+
+
+
+
+
+
+/*******************************
+ * Line Height
+ * ------------------------------
+ * 
+    1.
+      Make body height a minimum of the viewport height
+    2.
+      Apply relative line height on each block, progressively. 
+
+    3.
+      Create hierarchical vertical space on block-level elements
+
+      a.
+        Apply one unit of --line-lead on block-level media phrases, and paragraphs.
+
+        The absence of ascender space and descender space on those media creates a space hierarchy, lower hierarchy, to that of paragraphs.
+
+        If paragraphs start or end with block-level media, a double of units, at respective end, balance such paragraphs with those that do not have such media.
+
+        Remove line height padding when there's a trailing block-level media
+
+      b.
+        Increase the unit by one each on heading level 6 to 1.
+
+ *
+********************************/
+
+/* 1 */
+body
+{
+  min-height: 100svh;
+}
+
+
+/* 2 */
+
+h1
+{
+  line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 7)));
+}
+
+h2
+{
+  line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 6)));
+}
+
+h3
+{
+  line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 5)));
+}
+
+h4
+{
+  line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 4)));
+}
+
+h5
+{
+  line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 3)));
+}
+
+h6
+{
+  line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 2)));
+}
+
+hgroup > :is(h1, h2, h3, h4, h5, h6) ~ p
+{
+  line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 1)));
+}
+
+p, pre,
+dt, th, legend, summary,
+
+html
+{
+  line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 0)));
+}
+
+hgroup > p:has(~ :is(h1, h2, h3, h4, h5, h6))
+{
+  line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), -1)));
+}
+
 
 /* 3a */
-p:has(~ :is(h1, h2, h3, h4, h5, h6)), 
-small, ::marker
+
+video,
+audio, 
+iframe, 
+object,
+svg:not([height='16']), 
+img:not([height='16']),
+
+p,
+pre
 {
-  --bfs: var(--bfs-075);
+  margin-block: var(--line-lead);
 }
+
 
 /* 3b */
-body, 
-p, pre, 
-summary, legend, dt, th 
+
+:is(p, pre):has(> span:first-child):has(> span:first-child > :is(audio, video, iframe, object, svg:not([height='16']), img:not([height="16"])):only-child)
 {
-  --bfs: var(--bfs-100);
+  margin-block-start: calc(2 * var(--line-lead));
 }
 
-/* 3c */
-hgroup :is(h1, h2, h3, h4, h5, h6) ~ p 
+:is(p, pre):has(> span:last-child):has(> span:last-child > :is(audio, video, iframe, object, svg:not([height='16']), img:not([height="16"])):only-child)
 {
-  --bfs: var(--bfs-200);
+  margin-block-end: calc(2 * var(--line-lead));
+
+  /* 4c */
+  padding-block-end: 0;
 }
 
 
 /* 3d */
 
-h6 {
-  --bfs: var(--bfs-300);
+:is(section, article):has(> hgroup > h6) {
+  padding-block-start: calc(2 * var(--line-lead));
 }
 
-h5 {
-  --bfs: var(--bfs-400);
+:is(section, article):has(> hgroup > h5) {
+  padding-block-start: calc(3 * var(--line-lead));
 }
 
-h4 {
-  --bfs: var(--bfs-500);
+:is(section, article):has(> hgroup > h4) {
+  padding-block-start: calc(4 * var(--line-lead));
+}  
+
+:is(section, article):has(> hgroup > h3) {
+  padding-block-start: calc(5 * var(--line-lead));
 }
 
-h3 {
-  --bfs: var(--bfs-600);
+:is(section, article):has(> hgroup > h2) {
+  padding-block-start: calc(6 * var(--line-lead));
 }
 
-h2 {
-  --bfs: var(--bfs-700);
-}
-
-h1 {
-  --bfs: var(--bfs-800);
-}
-
-/* 4 */
-body,
-h1, h2, h3, h4, h5, h6, 
-summary, legend, dt, th, 
-p, pre,
-small, ::marker
-{
-
-  /* 4a */
-  font-family: var(--base-font-family);
-
-  /* 4b */
-  font-size: calc(var(--bfs) * 1rem);
-
-  /* 4c */
-  line-height: calc(
-    1 + (
-      var(--base-line-height) / var(--bfs)      
-    )
-  );
-}
-
-/* 4b */
-select::picker-icon {
-  --bfs: var(--bfs-075);
-  font-size: calc(var(--bfs) * 1rem);
-  /* line-height: 2.2em; */
-  /* line-height: inherit */
-  /* transform-origin: 50%; */
-}
-
-/* 5 */
-p {
-  text-wrap: pretty;
-}
-
-/* 6 */
-h1, h2, h3, h4, h5, h6, 
-hgroup :is(h1, h2, h3, h4, h5, h6) ~ p,
-summary, legend, dt, th 
-{
-  text-wrap: balance;
+:is(section, article):has(> hgroup > h1) {
+  padding-block-start: calc(7 * var(--line-lead));
 } 
 
 
 
 
-/* SPACING
-    ========================================================= */
-
-/* 1 - 3 */
-:root {
-
-  /* 1 */
-  --base-mode-indent: 0;
-  --base-block-gap: .9;
-  --base-line-length: 36rem;
-
-  /* 2 */
-  --bbg: calc(1rem * var(--base-block-gap) * var(--base-line-height) * var(--base-font-size));
-
-  /* 3 */
-  --bbg-100: calc( (1 - var(--base-mode-indent)) * var(--bbg));
-  --bbg-200: calc( (2 - var(--base-mode-indent)) * var(--bbg));
-  --bbg-300: calc( (3 - var(--base-mode-indent)) * var(--bbg));
-  --bbg-400: calc( (4 - var(--base-mode-indent)) * var(--bbg));
-  --bbg-500: calc( (5 - var(--base-mode-indent)) * var(--bbg));
-  --bbg-600: calc( (6 - var(--base-mode-indent)) * var(--bbg));
-  --bbg-700: calc( (7 - var(--base-mode-indent)) * var(--bbg));
-  --bbg-800: calc( (8 - var(--base-mode-indent)) * var(--bbg));
-  --bbg-900: calc( (9 - var(--base-mode-indent)) * var(--bbg));
-}
-
-/* 4 */
-h1, h2, h3, h4, h5, h6 
-{
-  /* where .15em is synonymous to line height offset */
-  padding-block: 0 .15em;
-}
-
-/* 5a */
-p:has(~ :is(h1, h2, h3, h4, h5, h6)) {
-  margin-block: 0 calc(.25 * var(--bbg));
-}
-
-/* 5b */
-dt,
-hgroup :is(h1, h2, h3, h4, h5, h6) ~ p {
-  margin-block: calc(.50 * var(--bbg));
-}
-
-/* 5c */
-p, pre {
-  margin-block: var(--bbg-100);
-}
 
 
-/* on mixes, enforce space irrespective of indent mode */
 
-ol, ul, dl
-{
-  margin-block: var(--bbg);
-}
 
-dd {
-  margin: 0;
-}
-
-table,
-iframe, object, embed, video, audio, img,
-blockquote, fieldset, address, figure, 
-del:has(p, pre, details, fieldset, table, dl),
-ins:has(p, pre, details, fieldset, table, dl),
-:where(a[href]:has(p, pre, details, fieldset, table, dl))
-{
-  /* 
-    * add .5 to 1 to compensate for 
-    * loss of ascender and descender space 
-    * prior to border 
-    */
-  margin-block: calc(1.5 * var(--bbg));
-}
-
-:is(
-  table,
-  blockquote, fieldset, address, figure, 
-  del:has(p, pre, details, fieldset, table, dl),
-  ins:has(p, pre, details, fieldset, table, dl),
-  :where(a[href]:has(p, pre, details, fieldset, table, dl))
-) +
-:is(
-  table,
-  blockquote, fieldset, address, figure, 
-  del:has(p, pre, details, fieldset, table, dl),
-  ins:has(p, pre, details, fieldset, table, dl),
-  :where(a[href]:has(p, pre, details, fieldset, table, dl))
-) 
-{
-  /* 
-    * add .5 again to start to compensate for 
-    * loss of descender space at end of previous element 
-    * due to border to border 
-    */
-  margin-block-start: calc(2 * var(--bbg));
-}
-
-/* 5d */
-
-details {
-  margin-block: calc(1.5* var(--bbg-100));
-}
-
-legend, th 
-{
-  margin-block: calc(1.5* var(--bbg-100)) var(--bbg-100);
-}
 
   
-/* 5e */
+/*******************************************
+ * Line Length
+ *__________________________________________ 
+ *
+    Cap components progressively:
 
-header, 
-:where(figcaption:first-child) 
+    1. 
+      Cap landmark at one and a half of the line length, for aesthetics.
+    2.
+      Cap segments at the line length with an extension of 3 of --line-leads at each ends. The extension makes segment icons seems for the segment than for the neighbouring block or mix
+    3.
+      Cap mixes and blocks at the line length to allow for multi-column within segments or landmarks.
+    4.
+      Cap paragraph separators at one-fourth of the line length
+
+    0a. 
+      Prevent content from touching the inline ends of containers for dimensional content.
+      
+ *
+********************************************/
+
+
+/* 1 */
+*:has(~ main), main, main ~ *
 {
-  padding: 0 0 var(--bbg);
+  width: 100%;
+  max-width: calc(1.5 * var(--line-length));
+  margin-inline: auto;
+  border-inline: calc(var(--border-width) * 1px) solid var(--border-color);
 }
 
-header + *, 
-:where(figcaption:first-child + *)
+/* 2 */
+section:has(> hgroup) > *:not(:is(section:has(> hgroup), hgroup))
 {
-  margin-block-start: var(--bbg-200);
+  width: 100%;
+  max-width: calc((6 * var(--line-lead)) + var(--line-length));
+  margin-inline: auto;
 }
 
-:where(figcaption:last-child) 
+
+/* 3 */
+p,
+pre,
+th,
+
+ol,
+ul,
+dl,
+menu,
+
+
+hgroup,
+
+figure, 
+figure, 
+address,
+details,
+fieldset, 
+blockquote, 
+a:has(:is(p, pre)),
+del:has(:is(p, pre)),
+ins:has(:is(p, pre)),
+map:has(:is(p, pre)),
+object:has(:is(p, pre, h1, h2, h3, h4, h5, h6, summary, legend, dt, th)) > div:only-child
 {
-  padding: var(--bbg) 0 0;
-  margin-block-start: var(--bbg-200);
-}
-
-hgroup + * {
-  margin-block-start: var(--bbg-200);
-}
-
-hr {
-  margin-block: var(--bbg-200);
+  width: 100%;
+  max-width: var(--line-length);
+  margin-inline: auto;
 }
 
 
-/* 5f */
+/* 5 */
+hr 
+{
+  width: 100%;
+  max-width: calc(.25 * var(--line-length));
+  margin-inline: auto;
+}
 
-/* redirect margin to sections */
+
+/* 0a */
+td, 
+th,
+caption,
+*:has(~ main), main, main ~ *
+{
+  padding-inline: calc(3ch * var(--border-width) / var(--border-width));
+}
+
+
+
+
+  
+/*******************************
+ * COLOR
+ * ______________________________
+ *
+    Set and apply foreground and background color for content via their windows.
+ * 
+********************************/
+
+body,
+dialog
+{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*****************************************
+ * BLOCKS
+ * ---------------------------------------
+ * 
+    1.
+      Balance decender and ascender space on every block.
+    2.
+      Bolden headings and titles as per leads
+    3.
+      Revert paragraphs cum preheadings to inline-level 
+    4.
+      Create a tier system on sections. Let independent sections use bold tiers.[a]
+    5. 
+      Prevent fieldset's title from touching the fieldset's border
+    6.
+      Change cursor on hovering details' title.[a] and hang its marker to signal the title's follower.[b]
+    7.
+      Maintain preformatted paragraphs
+    8.
+      Style paragraph separators
+    9.  
+      Partition windows and sections using border
+      
+      Use border-block-start because of sections have their differentiating block side is at start.[a] 
+      
+      Since these are demarcations, the border start on the first child must be nullified.[b]
+
+      With the presence of a border, paddings breathe space around the demarcation.[c] But, no need for paddings on subsections (not sub segments) because they addup to the last segment.[d]
+
+    10.
+      Label parts (and mixes) with icons. 
+
+      After stopping icons from disrupting block spacing,[a] reposition them into the margin area,[b] then stick them to the viewport.[c] The sticky position of icons for mixes should be below that of windows.[d]
+
+      Each component should have unique icons.[e]
+
+ *
+******************************************/
+
+/* 1 */
+p, pre,
+summary, legend, dt, th,
 h1, h2, h3, h4, h5, h6 {
-  margin-block: 0;
+  padding-block-end: var(--lh-pad);
+}
+
+/* 2 */
+h1, h2, h3, h4, h5, h6,
+summary, legend, dt, th
+{
+  font-weight: 700;
+}
+
+/* 3 */
+hgroup p:has(~ :is(h1, h2, h3, h4, h5, h6)) {
+  width: auto;
+  display: inline-block;
+  margin: 0 calc(3ch * var(--border-width) / var(--border-width)) 0 0;
 }
 
 
-/* Landmarks */
-:where(body > div > *) {
-  margin: var(--bbg-300) 0;
-  padding-inline: 1rem;
+/* 4 */
+
+main
+{
+  counter-reset: h1;
 }
 
-/* sections */
-
-:where(main section) {
-  margin-block: var(--bbg-800);
+main > section:has(h1)
+{
+  counter-reset: h2;
 }
 
-:where(
-  main 
-  section 
-  :is(section, article, nav, aside)
-) {
-  margin-block: var(--bbg-700) 0;
+:where(main > section:has(h1))::before
+{
+  content: var(--content, counter(h1, decimal-leading-zero) "." / "");
+  counter-increment: h1;
+  background-color: var(--background-color);
+  display: block;
 }
 
-:where(
-  main 
-  section 
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-) {
-  margin-block: var(--bbg-600) 0;
+
+main > section > :is(section, article):has(> hgroup > h2)
+{
+  counter-reset: h3;
 }
 
-:where(
-  main 
-  section 
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-) {
-  margin-block: var(--bbg-500) 0;
+:where(main > section > :is(section, article):has(> hgroup > h2))::before
+{
+  content: var(--content, counter(h2, decimal-leading-zero) "." / "");
+
+  counter-increment: h2;
+  padding-inline-start: 3ch;
+  background-image: 
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch)
+  ;
+  background-size: 3ch 1px;
+  background-position: 0 90%;
+} 
+
+
+main > section > :is(section, article) > :is(section, article):has(> hgroup > h3)
+{
+  counter-reset: h4;
 }
 
-:where(
-  main 
-  section 
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-) {
-  margin-block: var(--bbg-400) 0;
+:where(main > section > :is(section, article) > :is(section, article):has(> hgroup > h3))::before
+{
+  content: var(--content, counter(h3, decimal-leading-zero) "." / "");
+
+  counter-increment: h3;
+  padding-inline-start: 6ch;
+  box-sizing: border-box;
+  background-image: 
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch)
+  ;
+  background-size: 3ch 1px, 3ch 1px;
+  background-position: 0 90%, 3ch 90%;
+} 
+
+
+main > section > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h4)
+{
+  counter-reset: h5;
 }
 
-:where(
-  main 
-  section 
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-  :is(section, article, nav, aside)
-) {
-  margin-block: var(--bbg-300) 0;
+:where(main > section > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h4))::before
+{
+  content: var(--content, counter(h4, decimal-leading-zero) "." / "");
+
+  counter-increment: h4;
+  padding-inline-start: 9ch;
+  background-image: 
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch)
+  ;
+  background-size: 3ch 1px, 3ch 1px, 3ch 1px;
+  background-position: 0 90%, 3ch 90%, 6ch 90%;
+
+} 
+
+
+main > section > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h5)
+{
+  counter-reset: h6;
 }
 
+:where(main > section > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h5))::before
+{
+  content: var(--content, counter(h5, decimal-leading-zero) "." / "");
+
+  counter-increment: h5;
+  padding-inline-start: 12ch;
+  background-image: 
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch)
+  ;
+  background-size: 3ch 1px, 3ch 1px, 3ch 1px, 3ch 1px;
+  background-position: 0 90%, 3ch 90%, 6ch 90%, 9ch 90%;
+} 
+
+
+main > section > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h6)
+{
+  counter-reset: h7;
+}
+
+:where(main > section > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h6))::before
+{
+  content: var(--content, counter(h6, decimal-leading-zero) "." / "");
+
+  counter-increment: h6;
+  padding-inline-start: 15ch;
+  background-image: 
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch),
+    linear-gradient(to right, currentColor 0, currentColor 2ch, transparent 2ch, transparent 3ch)
+  ;
+  background-size: 3ch 1px, 3ch 1px, 3ch 1px, 3ch 1px, 3ch 1px;
+  background-position: 0 90%, 3ch 90%, 6ch 90%, 9ch 90%, 12ch 90%;
+} 
+
+
+:is(section, article)::before 
+{
+  font-family: monospace;
+  font-size: .7em;
+  position: sticky;
+  top: 0;
+  background-repeat: no-repeat;
+  display: block;
+  z-index: 1;
+}
+
+/* 4a */
+article::before {
+  font-weight: bold;
+}
+
+
+/* 5 */
+legend
+{
+  margin-inline: -.5ch 0;
+  padding-inline: .5ch;  
+}
 
 /* 6 */
-p + p {
-  text-indent: calc(var(--base-mode-indent) * 1em);
-}
-
-:is(hgroup, form, search, fieldset) p + p {
-  text-indent: 0;
-}
-
-/**
- * 7
- *
- * hgroup to contain kickers
- * bordered cards to shift inline borders to content
- * list layers to contain their markers
- */
-hgroup,
-h1, h2, h3, h4, h5, h6,
-summary, legend, th, dt,
-p, pre, 
-blockquote, fieldset, address, figure, 
-del:has(p, pre, details, fieldset, table, dl),
-ins:has(p, pre, details, fieldset, table, dl),
-:where(a[href]:has(p, pre, details, fieldset, table, dl)),
-ol, ul, dl
+summary
 {
-  margin-inline: auto;
-  max-width: var(--base-line-length);
+  /* 6a */
+  cursor: pointer;
+
+  /* 6b */
+  list-style-position: outside;
+}
+
+/* 7 */
+pre
+{
+  font-family: monospace;
+  overflow-x: auto;
 }
 
 /* 8 */
-iframe, object, embed, video, audio, img 
+hr
 {
-  display: block;
-  margin-inline: auto;
-  max-width: 100%;
+
+  height: 0;
+
+  border: none;
+  border-block-end: 1px solid;
+  border-color: color-mix(in srgb, currentColor 50%, transparent 100%);
+
+  margin-block: calc(2 * var(--line-lead));
 }
 
+
 /* 9 */
-table {
-  margin-inline: auto;
+
+*:has(~ main), main, main ~ *,
+:is(section, article):has(> hgroup) > *
+{
+
+  /* 9a */
+  border-block-start: 
+    calc(1px * var(--border-width))
+    solid
+    var(--border-color)
+  ;
+
+  /* 9c */
+  padding-block: calc(1 * var(--line-lead) * var(--border-width) / var(--border-width));
+}
+
+/* 9d */
+:is(section, article):has(> hgroup)
+{
+  padding-block: 0;
+}
+
+/* 9c */
+:is(*:has(~ main), main, main ~ *):first-child,
+:is(*:has(~ hgroup), hgroup, hgroup ~ *):first-child
+{
+  border-block-start: none;
 }
 
 
 /* 10 */
 
-/*
- * full line height centers the SVG by default.
- * Aligning to bottom avoids overflow at line block 
- */
-svg, math {
-  height: 1lh;
-  vertical-align: bottom;
-}
-  
-/* 11 */
-ol, ul, dl
+:where(
+  nav,
+  form,
+  main,
+  aside,
+  header,
+  footer,
+  search,
+  article,
+
+  figure, 
+  address,
+  blockquote, 
+  a:has(:is(p, pre))[href],
+  del:has(:is(p, pre)),
+  ins:has(:is(p, pre)),
+  map:has(:is(p, pre)),
+)::before
 {
-  padding-inline-start: 2em;
-}    
+  content: var(--content, "");
 
-/* 12 */
-/* redirect margin of body to frames */
-body {
-  margin: 0;
-}
+  display: block;
+  font-size: .7em;
+  width: 1em;
+  height: 1em;
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  background-color: currentColor;
 
-dialog {
-  padding: 0;
-}
+  /* 10a */
+  margin-top: -1em;
   
-td, caption {
-  padding: .5rem 1rem;
+  /* 10b */
+  transform: translate(-1.4em, 1em);
+
+  /* 10c */
+  position: sticky;
+
+  /* 10d */
+  top: 2.5em;
 }
 
-/* 13 */
-[hidden] {
-  display: none;
+/* 10d */
+:is(*:has(~ main), main, main ~ *)::before
+{
+  top: 1em;
 }
 
 
-:where(a[href]:not(:has(p, pre, details, fieldset, table, dl))) {
+/* 10e */
+
+main::before 
+{
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-square%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M3%203m0%202a2%202%200%200%201%202%20-2h14a2%202%200%200%201%202%202v14a2%202%200%200%201%20-2%202h-14a2%202%200%200%201%20-2%20-2z%22%20%2F%3E%3C%2Fsvg%3E");
+}
+
+aside::before 
+{
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-border-corner-square%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M4%2020v-15a1%201%200%200%201%201%20-1h15%22%20%2F%3E%3C%2Fsvg%3E");
+}
+
+header::before 
+{
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-bell-ringing%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M10%205a2%202%200%200%201%204%200a7%207%200%200%201%204%206v3a4%204%200%200%200%202%203h-16a4%204%200%200%200%202%20-3v-3a7%207%200%200%201%204%20-6%22%20%2F%3E%3Cpath%20d%3D%22M9%2017v1a3%203%200%200%200%206%200v-1%22%20%2F%3E%3Cpath%20d%3D%22M21%206.727a11.05%2011.05%200%200%200%20-2.794%20-3.727%22%20%2F%3E%3Cpath%20d%3D%22M3%206.727a11.05%2011.05%200%200%201%202.792%20-3.727%22%20%2F%3E%3C%2Fsvg%3E");
+}
+
+footer::before
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItaW5mby10cmlhbmdsZSI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTEwLjM2MyAzLjU5MWwtOC4xMDYgMTMuNTM0YTEuOTE0IDEuOTE0IDAgMCAwIDEuNjM2IDIuODcxaDE2LjIxNGExLjkxNCAxLjkxNCAwIDAgMCAxLjYzNiAtMi44N2wtOC4xMDYgLTEzLjUzNmExLjkxNCAxLjkxNCAwIDAgMCAtMy4yNzQgMHoiIC8+PHBhdGggZD0iTTEyIDloLjAxIiAvPjxwYXRoIGQ9Ik0xMSAxMmgxdjRoMSIgLz48L3N2Zz4=");
+}
+
+article::before
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItcGFnZS1icmVhayI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgc3Ryb2tlPSJub25lIi8+PHBhdGggZD0iTTE0IDN2NGExIDEgMCAwIDAgMSAxaDRtMCAxMHYxYTIgMiAwIDAgMS0yIDJIN2EyIDIgMCAwIDEtMi0ydi0xbS0yLTRoM200LjUgMGgzbTQuNSAwaDMiLz48cGF0aCBkPSJNNSAxMFY1YTIgMiAwIDAgMSAyLTJoN2w1IDV2MiIvPjwvc3ZnPg==");
+}
+
+
+map:has(:is(p, pre))::before
+{
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-photo%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M15%208h.01%22%20%2F%3E%3Cpath%20d%3D%22M3%206a3%203%200%200%201%203%20-3h12a3%203%200%200%201%203%203v12a3%203%200%200%201%20-3%203h-12a3%203%200%200%201%20-3%20-3v-12z%22%20%2F%3E%3Cpath%20d%3D%22M3%2016l5%20-5c.928%20-.893%202.072%20-.893%203%200l5%205%22%20%2F%3E%3Cpath%20d%3D%22M14%2014l1%20-1c.928%20-.893%202.072%20-.893%203%200l3%203%22%20%2F%3E%3C%2Fsvg%3E");
+}
+
+del:has(:is(p, pre))::before {
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItZmlsZS1taW51cyI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE0IDN2NGExIDEgMCAwIDAgMSAxaDQiIC8+PHBhdGggZD0iTTE3IDIxaC0xMGEyIDIgMCAwIDEgLTIgLTJ2LTE0YTIgMiAwIDAgMSAyIC0yaDdsNSA1djExYTIgMiAwIDAgMSAtMiAyeiIgLz48cGF0aCBkPSJNOSAxNGw2IDAiIC8+PC9zdmc+");
+}
+
+ins:has(:is(p, pre))::before 
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItZmlsZS1wbHVzIj48cGF0aCBzdHJva2U9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMTQgM3Y0YTEgMSAwIDAgMCAxIDFoNCIgLz48cGF0aCBkPSJNMTcgMjFoLTEwYTIgMiAwIDAgMSAtMiAtMnYtMTRhMiAyIDAgMCAxIDIgLTJoN2w1IDV2MTFhMiAyIDAgMCAxIC0yIDJ6IiAvPjxwYXRoIGQ9Ik0xMiAxMWwwIDYiIC8+PHBhdGggZD0iTTkgMTRsNiAwIiAvPjwvc3ZnPg==");
+}
+
+nav::before 
+{
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-location%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M21%203l-6.5%2018a.55%20.55%200%200%201%20-1%200l-3.5%20-7l-7%20-3.5a.55%20.55%200%200%201%200%20-1l18%20-6.5%22%20%2F%3E%3C%2Fsvg%3E");
+}
+
+address::before
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItYWRkcmVzcy1ib29rIj48cGF0aCBzdHJva2U9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjAgNnYxMmEyIDIgMCAwIDEgLTIgMmgtMTBhMiAyIDAgMCAxIC0yIC0ydi0xMmEyIDIgMCAwIDEgMiAtMmgxMGEyIDIgMCAwIDEgMiAyeiIgLz48cGF0aCBkPSJNMTAgMTZoNiIgLz48cGF0aCBkPSJNMTMgMTFtLTIgMGEyIDIgMCAxIDAgNCAwYTIgMiAwIDEgMCAtNCAwIiAvPjxwYXRoIGQ9Ik00IDhoMyIgLz48cGF0aCBkPSJNNCAxMmgzIiAvPjxwYXRoIGQ9Ik00IDE2aDMiIC8+PC9zdmc+");
+}
+
+figure::before
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItY2lyY2xlLWRvdHRlZC1sZXR0ZXItaSI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTEyIDh2OCIgLz48cGF0aCBkPSJNNy41IDQuMjF2LjAxIiAvPjxwYXRoIGQ9Ik00LjIxIDcuNXYuMDEiIC8+PHBhdGggZD0iTTMgMTJ2LjAxIiAvPjxwYXRoIGQ9Ik00LjIxIDE2LjV2LjAxIiAvPjxwYXRoIGQ9Ik03LjUgMTkuNzl2LjAxIiAvPjxwYXRoIGQ9Ik0xMiAyMXYuMDEiIC8+PHBhdGggZD0iTTE2LjUgMTkuNzl2LjAxIiAvPjxwYXRoIGQ9Ik0xOS43OSAxNi41di4wMSIgLz48cGF0aCBkPSJNMjEgMTJ2LjAxIiAvPjxwYXRoIGQ9Ik0xOS43OSA3LjV2LjAxIiAvPjxwYXRoIGQ9Ik0xNi41IDQuMjF2LjAxIiAvPjxwYXRoIGQ9Ik0xMiAzdi4wMSIgLz48L3N2Zz4=");
+}
+
+blockquote::before {
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-quotes%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M4%2012c-1.333%20-1.854%20-1.333%20-4.146%200%20-6%22%20%2F%3E%3Cpath%20d%3D%22M8%2012c-1.333%20-1.854%20-1.333%20-4.146%200%20-6%22%20%2F%3E%3Cpath%20d%3D%22M16%2018c1.333%20-1.854%201.333%20-4.146%200%20-6%22%20%2F%3E%3Cpath%20d%3D%22M20%2018c1.333%20-1.854%201.333%20-4.146%200%20-6%22%20%2F%3E%3C%2Fsvg%3E");
+}
+
+a:has(:is(p, pre))[href]::before
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItbGluayI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTkgMTVsNiAtNiIgLz48cGF0aCBkPSJNMTEgNmwuNDYzIC0uNTM2YTUgNSAwIDAgMSA3LjA3MSA3LjA3MmwtLjUzNCAuNDY0IiAvPjxwYXRoIGQ9Ik0xMyAxOGwtLjM5NyAuNTM0YTUuMDY4IDUuMDY4IDAgMCAxIC03LjEyNyAwYTQuOTcyIDQuOTcyIDAgMCAxIDAgLTcuMDcxbC41MjQgLS40NjMiIC8+PC9zdmc+");
+}
+
+search::before {
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-search%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M10%2010m-7%200a7%207%200%201%200%2014%200a7%207%200%201%200%20-14%200%22%20%2F%3E%3Cpath%20d%3D%22M21%2021l-6%20-6%22%20%2F%3E%3C%2Fsvg%3E");
+}
+
+form::before {
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItY3JvcC0xNi05Ij48cGF0aCBzdHJva2U9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNNCA4bTAgMmEyIDIgMCAwIDEgMiAtMmgxMmEyIDIgMCAwIDEgMiAydjRhMiAyIDAgMCAxIC0yIDJoLTEyYTIgMiAwIDAgMSAtMiAtMnoiIC8+PC9zdmc+");
+}
+
+
+
+
+
+/*****************************************
+ * MIXES
+ * ---------------------------------------
+ *
+    1.
+      Use border to mark boundaries of all mixes.
+
+      With the presence of the border, add padding inline for space at line ends,[a] and margin block for space after border blocks; margin block of double --line-lead since border conceal ascender and descender space.[b] The margin block on paragraphs act as padding block for the mix.
+
+      Redeclare: display of block to target transparent mixes;[c] text decoration of none for del and ins elements;[d] and color for anchor elements.[e]
+
+      For any second mix in a row, 2 bordered components, except fieldset whose title is not is not bordered, the margin top, for separation, is a triple --line-lead.[1d]
+
+      When a second mix in a row is a fieldset, the initial margin top on all mix is valid, but it reduces to a single --line-lead if after paragraphs.[1e]
+
+      Pad top of dl to keep items away.[1f]
+
+    2.
+      Position icons of mixes in the margin area of the card's parent, right under that of segments which is under that of landmarks.
+
+    3. 
+      Partition cards
+
+      a.
+        Separate caption from content in a figure.
+      b.
+        Separate title from content in a fieldset or details.
+      c.
+        Separate multiple titles and descriptions, respectively, in items of description layers
+      d.
+        Separate caption, heads, bodies, foots, and cells in a table layer.
+
+    4.
+      Style list layers
+
+      a.
+        Provide space to accomodate 3 digit markers
+      b.
+        Apply: decimal-leading zero to ol, square to menu, disc to ul, circle to dl. 
+      c.
+        Make marker size smaller to content size
+
+ *
+******************************************/
+
+/* 1 */
+ul,
+ol,
+dl,
+menu,
+figure, 
+dialog,
+address,
+details,
+fieldset, 
+blockquote, 
+a:has(:is(p, pre)),
+del:has(:is(p, pre)),
+ins:has(:is(p, pre)),
+map:has(:is(p, pre))
+{
+  border: 
+    calc(1px * var(--border-width))
+    solid
+    var(--border-color)
+  ;
+
+  /* 1a */
+  padding-inline: calc(2 * var(--line-lead) * var(--border-width) / var(--border-width));
+
+  /* 1b */
+  margin-block: calc(2 * var(--line-lead));
+
+  /* 1c */
+  display: block;
+
+  /* 1d */
   text-decoration: none;
 }
 
-:where(a[href]:not(:has(p, pre, details, fieldset, table, dl))):hover {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
+dialog {
+  margin: auto;
 }
 
-:where(a[href]:not(:has(p, pre, details, fieldset, table, dl)))::after {
-  content: "\000bb";
+dialog::backdrop {
+  background-color: color-mix(in srgb, currentColor 20%, transparent 100%);
+  backdrop-filter: blur(1em);
+}
+
+
+/* 1d */
+:is(
+  ul,
+  ol,
+  dl,
+  menu,
+  table,
+  figure, 
+  address,
+  details,
+  fieldset,
+  blockquote, 
+  a:has(:is(p, pre)),
+  del:has(:is(p, pre)),
+  ins:has(:is(p, pre)),
+  map:has(:is(p, pre)),
+) + 
+:is(
+  ul,
+  ol,
+  dl,
+  menu,
+  table,
+  figure, 
+  address,
+  details,
+  blockquote, 
+  a:has(:is(p, pre)),
+  del:has(:is(p, pre)),
+  ins:has(:is(p, pre)),
+  map:has(:is(p, pre)),
+) 
+{
+  margin-block-start: calc(3 * var(--line-lead));
+}
+
+/* 1f */
+:is(p, pre) + fieldset:has(> legend)
+{
+  margin-block-start: calc(1 * var(--line-lead));
+}
+
+/* 1g */
+dl
+{
+  padding-block-start: var(--line-lead);
+}
+
+/* 2 */
+:is(
+  figure, 
+  address,
+  blockquote, 
+  a:has(:is(p, pre)),
+  del:has(:is(p, pre)),
+  ins:has(:is(p, pre)),
+  map:has(:is(p, pre)),
+)::before
+{
+  transform: translate(-3.2em, 1em);
+  top: 4em;
+}
+
+
+/* 3a */
+
+figcaption:first-child
+{
+  border-block-end: 1px solid var(--border-color);
+}
+
+figcaption:last-child
+{
+  border-block-start: 1px solid var(--border-color);
+}
+
+
+/* 3b */
+legend,
+details[open] > summary
+{
+  border-block-end: 
+    calc(1px * var(--border-width))
+    solid
+    var(--border-color)
+  ;
+} 
+
+
+/* 3c */
+
+dt:not(:last-of-type)
+{
+  background-image: 
+    linear-gradient(to right, var(--border-color) 0, var(--border-color) 2ch, transparent 2ch, transparent 3ch)
+  ;
+  background-size: 1ch 1px;
+  background-position: left bottom;
+  background-repeat: no-repeat;
+}
+
+dd
+{
+  border-block-start: calc(1px * var(--border-width)) solid var(--border-color);
+  margin-block-start: calc(1 * var(--line-lead) * var(--border-width) / var(--border-width));
+}
+
+
+/* 3d */
+
+table
+{
+  border-collapse: collapse;
+  width: 100%;
+  display: block;
+  overflow: auto;
+  margin-block: calc(2 * var(--line-lead));
+}
+
+caption
+{
+  display: block;
+  border: 1px solid var(--border-color);
+  text-align: start;
+  position: sticky;
+  left: 0;
+}
+
+thead
+{
+  border-block-end: calc(var(--border-width) * 2px) solid var(--border-color);
+}
+
+tfoot
+{
+  border-block-start: calc(var(--border-width) * 2px) solid var(--border-color);
+}
+
+th, td
+{
+  border: calc(var(--border-width) * 1px) solid var(--border-color);
+}
+
+th
+{
+  padding-block: calc(1 * var(--line-lead)) calc((1 * var(--line-lead)) + var(--lh-pad));
+}
+
+td 
+{
   vertical-align: top;
-  line-height: 1;
-  padding: 0 .1em;
+}
+
+
+/* 4a */
+ol, 
+ul, 
+dl,
+menu 
+{
+  padding-inline-start: calc(3ch * var(--border-width) / var(--border-width));
+}
+
+
+/* 4b */
+
+ol {
+  list-style-type: decimal-leading-zero;
+}
+
+menu
+{
+  list-style-type: square;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+dl > div
+{
+  display: list-item;
+  list-style-type: circle;
+}
+
+/* 4c */
+::marker
+{
+  font-size: .75em;
 }
 
 
 
-/* COLOR
-========================================================= */
 
-* {
-  outline-color: inherit;
+/*****************************************
+ * PHRASES
+ * ---------------------------------------
+ *
+    1.
+      Place icon-like images at inline level
+    2.
+      Place other media at block level
+    3.
+      Use monospace font, a fixed width font, on computer outputs
+    4.
+      Align meter and progress, graphical components, to the middle of line height. Also match their accent color to current color.
+    5.
+      Use implied style on top phrases
+    6.
+      Use icons to label other phrases
+    7.
+      Blend all forms to design
+
+      a.
+        Make single-line text forms take the height of the line-height. No more to avoid overflow; no less to enable enough writing space.
+      b.
+        Make multi-line form (textarea) and non-text forms use auto height.
+
+        With auto height, these forms are better vertically aligned to the middle
+      c.
+        Fix line height not being centered in height of button-like forms. 
+      d. 
+        Remove inconsistent background colors; both grey of button forms and white of non-button forms.
+      e.
+        Make accent color be current color for input type of range, radio, and checkbox.
+      f.
+        Change cursor type on hovering a form
+
+    8.
+      Make select forms customizable
+
+    9.
+      Iconify non-picker forms for consistency with picker forms
+      
+      a.
+        Make wrapper contain form
+      b.
+        Create space for icon
+      c.
+        Place icon
+
+
+ *
+******************************************/
+
+/* 1 */
+:is(svg, img)[height="16"] {
+  height: 1em;
 }
 
-a {
-  color: inherit;
-}
-
-@supports 
-(color: oklch(0 0 0)) and 
-(color: light-dark(#000, #fff)) 
-{  
-  :root {
-    --base-color-hue: 230;
-  }
-
-  body, dialog, select, input, button, textarea {
-    color: light-dark(
-      oklch(0.45 .02 var(--base-color-hue)),
-      oklch(.72 .01 var(--base-color-hue))
-    );
-    background-color: light-dark(
-      oklch(0.99 0.003 var(--base-color-hue)),
-      oklch(0.20 .03 var(--base-color-hue))
-    );
-  }
-
-  ::picker(select) {
-    color: light-dark(
-      oklch(0.45 .02 var(--base-color-hue)),
-      oklch(.72 .01 var(--base-color-hue))
-    );
-    background-color: light-dark(
-      oklch(0.99 0.003 var(--base-color-hue)),
-      oklch(0.20 .03 var(--base-color-hue))
-    );
-  }
-
-  option:hover {
-    background-color: light-dark(
-      oklch(0.95 0.003 var(--base-color-hue)),
-      oklch(0.25 .03 var(--base-color-hue))
-    );
-  }
+/* 2 */
+video,
+audio, 
+iframe, 
+object,
+svg:not([height='16']), 
+img:not([height='16'])
+{
+  display: block;
+  max-width: 100%;
 }
 
 
-select, input, button, textarea {
+/* 3 */
+kbd,
+code,
+samp,
+output
+{
+  font-family: monospace;
+}
+
+
+/* 4 */
+meter,
+progress
+{
+  vertical-align: middle;
   accent-color: currentColor;
 }
 
 
+/* 5 */
 
-
-
-/************************
-** CUSTOMS
-*************************/
-
-
-/* Cued Parts */
-
-header {
-  background-image: repeating-linear-gradient(
-    45deg,
-    currentColor 0, 
-    currentColor 1.4px,
-    transparent 1.4px,
-    transparent 5px
-  );
-  background-size: var(--base-line-length) 5px;
-  background-repeat: no-repeat;
-  background-position: 50% 100%;
-}
-
-:where(figcaption:first-child) {
-  background-image: repeating-linear-gradient(
-    45deg,
-    currentColor 0, 
-    currentColor 1.4px,
-    transparent 1.4px,
-    transparent 5px
-  );
-  background-size: 50% 5px;
-  background-repeat: no-repeat;
-  background-position: 0% 100%;
-}
-
-hr {
-  background-image: repeating-linear-gradient(
-    90deg,
-    currentColor 0, 
-    currentColor 1px,
-    transparent 1px,
-    transparent 5px
-  );
-  border: 0 none;
-  height: 5px;
-  background-size: var(--base-line-length) 5px;
-  background-position: 50% 100%;
-  background-repeat: no-repeat;
-}
-    
-:where(figcaption:last-child) {
-  background-image: repeating-linear-gradient(
-    135deg,
-    currentColor 0, 
-    currentColor 1.4px,
-    transparent 1.4px,
-    transparent 5px
-  );
-  background-size: 50% 5px;
-  background-repeat: no-repeat;
-  background-position: 0% 0%;
-}
-
-footer {
-  background-image: repeating-linear-gradient(
-    135deg,
-    currentColor 0, 
-    currentColor 1.4px,
-    transparent 1.4px,
-    transparent 5px
-  );
-  background-size: var(--base-line-length) 5px;
-  background-repeat: no-repeat;
-  background-position: 50% 0%;
-  padding-top: var(--bbg-200);
-}
-
-
-    
-/* Multi Kickers */  
-p:has(~ :is(h1, h2, h3, h4, h5, h6)) {
-  width: auto;
-  display: inline-block;
-  margin-inline-end: calc(2*var(--bbg));
-}
-
-
-/* Indented Disclosure */
-/* summary {
-  text-indent: .3em;
-} */
-
-
-/* Bordered Legend */
-legend {
-  border: 1px solid currentColor;
-  padding: 0 .75em .3em;
-  margin-inline: 0;
-}
-
-
-/* Bordered Table Layer*/
-
-table {
-  border-collapse: collapse;
-}
-
-table, th, td {
-  border: 1px solid currentColor;
-}
-
-caption {
-  text-align: start;
-
-  /* border caption to table */
-  border: 1px solid currentColor;
-  border-bottom: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-/* Marked Definition List */
-dt, dd {
-  position: relative;
-}
-
-dt::before,
-dd::before {
-  position: absolute;
-  left: -.875em;
-}
-
-dt::before {
-  content: "\203A";
-}
-
-dd::before {
-  content: "\00BB";
-}
-
-
-/* Ordered List */
-
-ol {
-  list-style-type: decimal;
-}
-
-:where(ol ol) {
-  list-style-type: lower-alpha;
-}
-
-:where(ol ol ol) {
-  list-style-type: lower-roman;
-}
-
-
-/* Marked Cards */
-
-blockquote, fieldset, address, figure,  
-del:has(p, pre, details, fieldset, table, dl),
-ins:has(p, pre, details, fieldset, table, dl),
-:where(a[href]:has(p, pre, details, fieldset, table, dl))
+strong
 {
-  border: 1px solid currentColor;
-  padding: 0 calc(1.5 * var(--bbg)) calc(.5 * var(--bbg));
+  font-weight: 700;
+}
+
+mark
+{
+  background-color: color-mix(in srgb, currentColor 5%, transparent 100%);
+  padding: 0 .4em .3em;
+}
+
+ins:not(:has(p, pre)),
+del:not(:has(p, pre))
+{
+  text-decoration-thickness: calc(.0625em * var(--border-width));
+}
+
+ins:not(:has(p, pre))
+{
+  text-underline-position: from-font;
+}
+
+abbr[title] {
+  text-decoration: underline 1px dotted currentColor;
+  text-underline-offset: 2px; 
+}
+
+var
+{
+  font-style: italic;
+}
+
+
+sub,
+sup
+{
+  font-size: .7em;
+  line-height: 1;
   position: relative;
-  font-style: normal;
-  display: block;
+  vertical-align: baseline;
+}
+
+sub
+{
+  bottom: -1ex;
+}
+
+sup
+{
+  top: -1.5ex;
+}
+
+
+small
+{
+  font-size: .875em;
+}
+
+
+/* 6 */
+
+i,
+b,
+u,
+s,
+em,
+cite,
+a:not(:has(p, pre)) 
+{
+  /* font-weight: 400; */
+  /* font-style: normal; */
   text-decoration: none;
-  color: inherit;
+  /* color: currentColor; */
 }
 
-blockquote::before,
-blockquote::after,
-address::before,
-address::after,
-del:has(p, pre, details, fieldset, table, dl)::before,
-del:has(p, pre, details, fieldset, table, dl)::after,
-ins:has(p, pre, details, fieldset, table, dl)::before,
-ins:has(p, pre, details, fieldset, table, dl)::after,
-:where(a[href]:has(p, pre, details, fieldset, table, dl))::before,
-:where(a[href]:has(p, pre, details, fieldset, table, dl))::after
+:where(
+  i,
+  b,
+  u,
+  s,
+  em,
+  kbd,
+  cite,
+  samp,
+  output,
+  map:not(:has(p, pre)),
+  a:not(:has(p, pre))[href],
+)::after
 {
-  content: "";
-  position: absolute;
-  left: .2em;
-  display: flex;
-  width: .4em;
-  height: .4em;
+  content: var(--content, "");
+  display: inline-block;
+  width: .7em;
+  height: .7em;
+  mask-size: cover;
+  mask-repeat: no-repeat;
   background-color: currentColor;
+  vertical-align: text-top;
 }
 
-blockquote::before {
-  top: .2em;
-  clip-path: polygon(77% 96%, 22% 96%, 22% 48%, 53% 4%, 72% 4%, 51% 48%, 77% 48%, 77% 96%);
+kbd::after,
+samp::after,
+output::after
+{
+  margin-inline: .5ch;
 }
 
-blockquote::after {
-  bottom: .2em;
-  clip-path: polygon(23% 4%, 78% 4%, 78% 52%, 47% 96%, 28% 96%, 49% 52%, 23% 52%, 23% 4%);
+i::after
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItcm91dGUtYWx0LWxlZnQiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik04IDNIM3Y1bTEzLTVoNXY1Ii8+PHBhdGggZD0ibTMgMyA3LjUzNiA3LjUzNkE1IDUgMCAwIDEgMTIgMTQuMDdWMjFtNi0xNC45OVY2bS0yIDIuMDJ2LS4wMU0xNCAxMHYuMDEiLz48L3N2Zz4=");
 }
 
-address::before {
-  top: .15em;
-  clip-path: circle(30% at 50% 50%);
+b::after
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItYmVsbC1yaW5naW5nIj48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBzdHJva2U9Im5vbmUiLz48cGF0aCBkPSJNMTAgNWEyIDIgMCAwIDEgNCAwIDcgNyAwIDAgMSA0IDZ2M2E0IDQgMCAwIDAgMiAzSDRhNCA0IDAgMCAwIDItM3YtM2E3IDcgMCAwIDEgNC02TTkgMTd2MWEzIDMgMCAwIDAgNiAwdi0xbTYtMTAuMjczQTExLjA1IDExLjA1IDAgMCAwIDE4LjIwNiAzTTMgNi43MjdBMTEuMDUgMTEuMDUgMCAwIDEgNS43OTIgMyIvPjwvc3ZnPg==");
 }
 
-address::after {
-  bottom: .15em;
-  clip-path: circle(30% at 50% 50%);
+u::after
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItdGlsZGUiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik00IDEyYzAtMS42NTcgMS41OTItMyAzLjU1Ni0zczMuMTEgMS41IDQuNDQ0IDNjMS4zMzMgMS41IDIuNDggMyA0LjQ0NCAzUzIwIDEzLjY1NyAyMCAxMiIvPjwvc3ZnPg==");
 }
 
-del:has(p, pre, details, fieldset, table, dl)::before {
-  top: .2em;
-  clip-path: polygon(100% 60%, 0% 60%, 0% 40%, 100% 40%, 100% 60%);
+s::after 
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItY2FuY2VsIj48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBzdHJva2U9Im5vbmUiLz48cGF0aCBkPSJNMyAxMmE5IDkgMCAxIDAgMTggMCA5IDkgMCAxIDAtMTggMG0xNS4zNjQtNi4zNjRMNS42MzYgMTguMzY0Ii8+PC9zdmc+");
 }
 
-del:has(p, pre, details, fieldset, table, dl)::after {
-  bottom: .2em;
-  clip-path: polygon(100% 60%, 0% 60%, 0% 40%, 100% 40%, 100% 60%);
+em::after {
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItcXVlc3Rpb24tbWFyayI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTggOGEzLjUgMyAwIDAgMSAzLjUgLTNoMWEzLjUgMyAwIDAgMSAzLjUgM2EzIDMgMCAwIDEgLTIgM2EzIDQgMCAwIDAgLTIgNCIgLz48cGF0aCBkPSJNMTIgMTlsMCAuMDEiIC8+PC9zdmc+");
+  margin-inline-start: -.2em;
 }
 
-ins:has(p, pre, details, fieldset, table, dl)::before {
-  top: .2em;
-  clip-path: polygon(60% 40%, 100% 40%, 100% 60%, 60% 60%, 60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%, 40% 0%, 60% 0%, 60% 40%);
+kbd::after
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXIta2V5Ym9hcmQiPjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yIDZtMCAyYTIgMiAwIDAgMSAyIC0yaDE2YTIgMiAwIDAgMSAyIDJ2OGEyIDIgMCAwIDEgLTIgMmgtMTZhMiAyIDAgMCAxIC0yIC0yeiIgLz48cGF0aCBkPSJNNiAxMGwwIC4wMSIgLz48cGF0aCBkPSJNMTAgMTBsMCAuMDEiIC8+PHBhdGggZD0iTTE0IDEwbDAgLjAxIiAvPjxwYXRoIGQ9Ik0xOCAxMGwwIC4wMSIgLz48cGF0aCBkPSJNNiAxNGwwIC4wMSIgLz48cGF0aCBkPSJNMTggMTRsMCAuMDEiIC8+PHBhdGggZD0iTTEwIDE0bDQgLjAxIiAvPjwvc3ZnPg==");
 }
 
-ins:has(p, pre, details, fieldset, table, dl)::after {
-  bottom: .2em;
-  clip-path: polygon(60% 40%, 100% 40%, 100% 60%, 60% 60%, 60% 100%, 40% 100%, 40% 60%, 0% 60%, 0% 40%, 40% 40%, 40% 0%, 60% 0%, 60% 40%);
+samp::after
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItbG9nb3V0Ij48cGF0aCBzdHJva2U9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMTQgOHYtMmEyIDIgMCAwIDAgLTIgLTJoLTdhMiAyIDAgMCAwIC0yIDJ2MTJhMiAyIDAgMCAwIDIgMmg3YTIgMiAwIDAgMCAyIC0ydi0yIiAvPjxwYXRoIGQ9Ik05IDEyaDEybC0zIC0zIiAvPjxwYXRoIGQ9Ik0xOCAxNWwzIC0zIiAvPjwvc3ZnPg==");
 }
 
-:where(a[href]:has(p, pre, details, fieldset, table, dl))::before {
-  top: .2em;
-  clip-path: polygon(100% 0%, 100% 70%, 72% 42%, 22% 92%, 8% 78%, 58% 28%, 30% 0%, 100% 0%);
+output::after
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBjbGlwLXBhdGg9InVybCgjY2xpcDBfOF8yMCkiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTE0IDhWNmEyIDIgMCAwIDAtMi0ySDVhMiAyIDAgMCAwLTIgMnYxMmEyIDIgMCAwIDAgMiAyaDdhMiAyIDAgMCAwIDItMnYtMm00LTcgMyAzaC02bTMgMyAzLTMiLz48L2c+PC9zdmc+");
 }
 
-:where(a[href]:has(p, pre, details, fieldset, table, dl))::after {
-  bottom: .2em;
-  clip-path: polygon(100% 0%, 100% 70%, 72% 42%, 22% 92%, 8% 78%, 58% 28%, 30% 0%, 100% 0%);
+cite::after
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItdGFnIj48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBzdHJva2U9Im5vbmUiLz48cGF0aCBkPSJNNi41IDcuNWExIDEgMCAxIDAgMiAwIDEgMSAwIDEgMC0yIDAiLz48cGF0aCBkPSJNMyA2djUuMTcyYTIgMiAwIDAgMCAuNTg2IDEuNDE0bDcuNzEgNy43MWEyLjQxIDIuNDEgMCAwIDAgMy40MDggMGw1LjU5Mi01LjU5MmEyLjQxIDIuNDEgMCAwIDAgMC0zLjQwOGwtNy43MS03LjcxQTIgMiAwIDAgMCAxMS4xNzIgM0g2YTMgMyAwIDAgMC0zIDMiLz48L3N2Zz4=");
+  margin-inline-start: .2em;
+}
+
+map:not(:has(p, pre))::after
+{
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-photo%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M15%208h.01%22%20%2F%3E%3Cpath%20d%3D%22M3%206a3%203%200%200%201%203%20-3h12a3%203%200%200%201%203%203v12a3%203%200%200%201%20-3%203h-12a3%203%200%200%201%20-3%20-3v-12z%22%20%2F%3E%3Cpath%20d%3D%22M3%2016l5%20-5c.928%20-.893%202.072%20-.893%203%200l5%205%22%20%2F%3E%3Cpath%20d%3D%22M14%2014l1%20-1c.928%20-.893%202.072%20-.893%203%200l3%203%22%20%2F%3E%3C%2Fsvg%3E");
+}
+
+a:not(:has(p, pre))[href]::after
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItZXh0ZXJuYWwtbGluayI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTEyIDZoLTZhMiAyIDAgMCAwIC0yIDJ2MTBhMiAyIDAgMCAwIDIgMmgxMGEyIDIgMCAwIDAgMiAtMnYtNiIgLz48cGF0aCBkPSJNMTEgMTNsOSAtOSIgLz48cGF0aCBkPSJNMTUgNGg1djUiIC8+PC9zdmc+");
+}
+
+a:not(:has(p, pre))[href]:hover {
+  cursor: pointer;
+  text-decoration: underline 1px currentColor;
 }
 
 
-
-/* Scrollable Pres */
-pre {
-  padding: 1em;
-  border: 1px solid currentColor;
-  overflow: auto;
-}
-
-
-
-
-/* Trued Forms */
+/* 7 */
 
 button,
-:where(
-  input:not([type]),
-  input[type=tel], 
-  input[type=url], 
-  input[type=text], 
-  input[type=date], 
-  input[type=week], 
-  input[type=time], 
-  input[type=file], 
-  input[type=email], 
-  input[type=month], 
-  input[type=color], 
-  input[type=reset], 
-  input[type=submit], 
-  input[type=button], 
-  input[type=number], 
-  input[type=search], 
-  input[type=password], 
-  input[type=datetime-local]
-) {
-  border: 1px solid;
-  font: inherit;
-  padding: 0 .5em .15em;
-  height: 2em;
-  vertical-align: middle;
-  line-height: 1.2;
-  width: fit-content;
-}
-
 select,
-::picker(select) {
-  appearance: base-select;
+textarea,
+input[type]
+{
+  font: inherit;
+
+  /* 7a */
+  height: 1lh;
+  border: 1px solid currentColor;
+  padding: 0 .5em var(--lh-pad);
+
+  /* 7d */
+  background-color: transparent;
+
+  /* 7e */
+  accent-color: currentColor;
+  
+  /* 7f */
+  cursor: pointer;
 }
 
 
-select {
-  font: inherit;
-  width: fit-content;
-  gap: 2em;
-  padding: 0 .3em .15em .3em;
-  align-items: center;
+/* 7b */
 
-  /* Use lineheight over height to align ::picker to center. Sum to 2em considering padding bottom and border top & bottom */
-  line-height: 1.725em;
+textarea,
+input[type=range],
+input[type=radio],
+input[type=checkbox]
+{
+  height: auto;
+}
+
+span:has(> 
+  :is(
+    textarea,
+    input[type=radio], 
+    input[type=range], 
+    input[type=checkbox]
+  )
+)
+{
+  vertical-align: middle;
+}
+
+
+/* 7c */
+button, 
+input[type=image],
+input[type=reset],
+input[type=submit],
+input[type=button]
+{
+  line-height: .5lh;
+  height: 2lh;
+}
+
+
+/* 8 */
+
+select 
+{
+  appearance: base-select;
+  border-radius: 0;
+  align-items: center;
 }
 
 select::picker-icon {
   transition: .4s rotate;
-
-  /* avoid cutoff upon clicked */
-  transform-origin: 40% 50%;
-  transform: translateX(-1px);
+  font-size: .7em;
 }
 
 select:open::picker-icon {
   rotate: 180deg;
 }
 
-option {
-  height: 2.5em;
-  padding: .3em .75em .45em;
-  flex-flow: row-reverse;
-  justify-content: space-between;
-  gap: 3em;
-}
 
-::picker(select) {
-  opacity: 0;
-  transition: all .25s allow-discrete;
-}
-
-::picker(select):popover-open {
-  opacity: 1;
-}
-
-@starting-style {
-  ::picker(select):popover-open {
-    opacity: 0;
-  }
-}
-
-input[type=range] 
+/* 9a */
+span:has(> input:only-child),
+span:has(> select:only-child)
 {
-  vertical-align: middle;
-}  
+  display: inline-flex;
+  position: relative;
+}
+
+/* 9b */
+span > input[type=url]:only-child,
+span > input[type=tel]:only-child,
+span > input[type=text]:only-child,
+span > input[type=email]:only-child,
+span > input[type=number]:only-child,
+span > input[type=search]:only-child,
+span > input[type=password]:only-child
+{
+  padding-inline-start: 1.4em;
+}
+
+
+/* 9c */
 
 :where(
-  input[type=radio], 
-  input[type=checkbox] 
-) {
-  width: 1em;
-  height: 1em;
-  font: inherit;
-  vertical-align: -.15em;
-  outline-offset: 0;
-}
+  span:has(
+    > :is(
+      input[type=tel], 
+      input[type=url], 
+      input[type=text],
+      input[type=email],
+      input[type=number],
+      input[type=search],
+      input[type=password],
+    ):only-child
+  )
+)::after
+{
+  content: var(--content, "");
+  position: absolute;
+  left: .4em;
+  top: 0;
+  bottom: 0;
+  margin-block: auto;
 
-textarea {
-  border: 1px solid currentColor;
-  font: inherit;
-  padding: 0 .5em .25em;
-  width: fit-content;
-}
-
-
-
-/* Pointed Interractables */
-summary,
-a, 
-label:not([disabled]),
-button:not([disabled]),
-select:not([disabled]),
-:where(
-  input[type=date], 
-  input[type=week], 
-  input[type=time], 
-  input[type=file], 
-  input[type=month], 
-  input[type=color], 
-  input[type=reset], 
-  input[type=range], 
-  input[type=radio], 
-  input[type=button], 
-  input[type=submit], 
-  input[type=checkbox], 
-  input[type=datetime-local]
-) {
-  cursor: pointer;
-}
-
-
-:where(label:has(textarea, select, input:not([type=checkbox], [type=radio], [type=range]))) {
-  display: grid;
-  margin-block-start: calc(.5 * var(--bbg))
-}
-
-:where(label:has(textarea, select, input:not([type=checkbox], [type=radio], [type=range])) + button) {
   display: block;
-  margin-block-start: calc(1.7 * var(--bbg))
+  width: .75em;
+  height: .75em;
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  background-color: #000;
+  color: currentColor;
 }
 
-
-summary {
-  font-weight: bold;
-  list-style-position: outside;
+span:has(input[type=search]:only-child)::after 
+{
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-search%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M10%2010m-7%200a7%207%200%201%200%2014%200a7%207%200%201%200%20-14%200%22%20%2F%3E%3Cpath%20d%3D%22M21%2021l-6%20-6%22%20%2F%3E%3C%2Fsvg%3E");
 }
 
-b {
-  font-weight: 500;
+span:has(input[type=text]:only-child)::after 
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItdGV4dC1pbmNyZWFzZSI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgc3Ryb2tlPSJub25lIi8+PHBhdGggZD0iTTQgMTlWOC41YTMuNSAzLjUgMCAxIDEgNyAwVjE5bS03LTZoN203LTR2Nm0zLTNoLTYiLz48L3N2Zz4=");
 }
 
-a:has(+a) {
-  margin-inline-start: 1ch;
+span:has(input[type=tel]:only-child)::after 
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItcGhvbmUiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik01IDRoNGwyIDUtMi41IDEuNWExMSAxMSAwIDAgMCA1IDVMMTUgMTNsNSAydjRhMiAyIDAgMCAxLTIgMkExNiAxNiAwIDAgMSAzIDZhMiAyIDAgMCAxIDItMiIvPjwvc3ZnPg==");
+}
+
+span:has(input[type=email]:only-child)::after 
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItYXQiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik04IDEyYTQgNCAwIDEgMCA4IDAgNCA0IDAgMSAwLTggMCIvPjxwYXRoIGQ9Ik0xNiAxMnYxLjVhMi41IDIuNSAwIDAgMCA1IDBWMTJhOSA5IDAgMSAwLTUuNSA4LjI4Ii8+PC9zdmc+");
+}
+
+span:has(input[type=number]:only-child)::after 
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItbnVtYmVyLTEyMyI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgc3Ryb2tlPSJub25lIi8+PHBhdGggZD0ibTMgMTAgMi0ydjhtNC04aDNhMSAxIDAgMCAxIDEgMXYyYTEgMSAwIDAgMS0xIDFoLTJhMSAxIDAgMCAwLTEgMXYyYTEgMSAwIDAgMCAxIDFoM200LThoMi41QTEuNSAxLjUgMCAwIDEgMjEgOS41djFhMS41IDEuNSAwIDAgMS0xLjUgMS41SDE4aDEuNWExLjUgMS41IDAgMCAxIDEuNSAxLjV2MWExLjUgMS41IDAgMCAxLTEuNSAxLjVIMTciLz48L3N2Zz4=");
+}
+
+span:has(input[type=password]:only-child)::after 
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItcGFzc3dvcmQiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik0xMiAxMHY0bS0yLTEgNC0ybS00IDAgNCAybS05LTN2NG0tMi0xIDQtMm0tNCAwIDQgMm0xMi0zdjRtLTItMSA0LTJtLTQgMCA0IDIiLz48L3N2Zz4=");
+}
+
+span:has(input[type=url]:only-child)::after 
+{
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItd29ybGQtd3d3Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBzdHJva2U9Im5vbmUiLz48cGF0aCBkPSJNMTkuNSA3QTkgOSAwIDAgMCAxMiAzYTguOTkgOC45OSAwIDAgMC03LjQ4NCA0Ii8+PHBhdGggZD0iTTExLjUgM2ExNyAxNyAwIDAgMC0xLjgyNiA0TTEyLjUgM2ExNyAxNyAwIDAgMSAxLjgyOCA0TTE5LjUgMTdhOSA5IDAgMCAxLTcuNSA0IDguOTkgOC45OSAwIDAgMS03LjQ4NC00Ii8+PHBhdGggZD0iTTExLjUgMjFhMTcgMTcgMCAwIDEtMS44MjYtNG0yLjgyNiA0YTE3IDE3IDAgMCAwIDEuODI4LTRNMiAxMGwxIDQgMS41LTRMNiAxNGwxLTRtMTAgMCAxIDQgMS41LTQgMS41IDQgMS00TTkuNSAxMGwxIDQgMS41LTQgMS41IDQgMS00Ii8+PC9zdmc+");
 }
