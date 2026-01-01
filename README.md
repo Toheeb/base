@@ -1,4 +1,10 @@
+# Base.css
 
-A classless stylesheet for Personalizable Web Designs.
+The web's first multipurpose classless stylesheet, with the most semantic rules, for complete customization and personalization of a webpage.
 
-Visit www.toheeb.com/en/base-css/ for demonstration, installation, idea, and code.
+Quick install: Add the following link to the head of a webpage.
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@toheeb/base@2.0.1/base.css" title="Base">
+```
+Learn about base.css at https://www.toheeb.com/en/user-based-styles/

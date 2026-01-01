@@ -1,6 +1,6 @@
 {
   "name": "@toheeb/base",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "The web's first multipurpose classless stylesheet, with the most semantic rules, for complete customization and personalization of a webpage.",
   "main": "index.js",
   "scripts": {
