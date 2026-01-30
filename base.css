@@ -1460,21 +1460,21 @@ select:open::picker-icon {
 
 
 /* 9a */
-span:has(> input:only-child),
-span:has(> select:only-child)
+span:where(:has(> input:only-child)),
+span:where(:has(> select:only-child))
 {
   display: inline-flex;
   position: relative;
 }
 
 /* 9b */
-span > input[type=url]:only-child,
-span > input[type=tel]:only-child,
-span > input[type=text]:only-child,
-span > input[type=email]:only-child,
-span > input[type=number]:only-child,
-span > input[type=search]:only-child,
-span > input[type=password]:only-child
+span > :where(input[type=url]:only-child),
+span > :where(input[type=tel]:only-child),
+span > :where(input[type=text]:only-child),
+span > :where(input[type=email]:only-child),
+span > :where(input[type=number]:only-child),
+span > :where(input[type=search]:only-child),
+span > :where(input[type=password]:only-child)
 {
   padding-inline-start: 1.4em;
 }
