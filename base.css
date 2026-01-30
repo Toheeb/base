@@ -1216,7 +1216,7 @@ strong
 }
 
 strong::after {
-  content: ":";
+  content: var(--content, ":");
 }
 
 mark
@@ -1268,15 +1268,15 @@ sup
 
 cite::after,
 cite::before {
-  content: "\"";
+  content: var(--content, "\"");
 }
 
 small::before {
-  content: "("
+  content: var(--content, "(");
 }
 
 small::after {
-  content: ")"
+  content: var(--content, ")");
 }
 
 /* 6 */
