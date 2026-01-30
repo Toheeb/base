@@ -1215,6 +1215,10 @@ strong
   font-weight: 700;
 }
 
+strong::after {
+  content: ":";
+}
+
 mark
 {
   background-color: color-mix(in srgb, currentColor 5%, transparent 100%);
