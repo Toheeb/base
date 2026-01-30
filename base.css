@@ -1504,8 +1504,9 @@ span > input[type=password]:only-child
   margin-block: auto;
 
   display: block;
-  width: .75em;
-  height: .75em;
+  font-size: .75em;
+  width: 1em;
+  height: 1em;
   mask-size: cover;
   mask-repeat: no-repeat;
   background-color: #000;
