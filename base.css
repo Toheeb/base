@@ -1172,7 +1172,7 @@ dl > div
 ******************************************/
 
 /* 1 */
-:is(svg, img)[height="16"] {
+:where(svg, img)[height="16"] {
   height: 1em;
 }
 
