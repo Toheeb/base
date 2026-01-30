@@ -1225,13 +1225,13 @@ mark
   padding: 0 .4em .3em;
 }
 
-ins:not(:has(p, pre)),
-del:not(:has(p, pre))
+ins:where(:not(:has(p, pre))),
+del:where(:not(:has(p, pre)))
 {
   text-decoration-thickness: calc(.0625em * var(--border-width));
 }
 
-ins:not(:has(p, pre))
+ins:where(:not(:has(p, pre)))
 {
   text-underline-position: from-font;
 }
@@ -1364,17 +1364,17 @@ output::after
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBjbGlwLXBhdGg9InVybCgjY2xpcDBfOF8yMCkiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTE0IDhWNmEyIDIgMCAwIDAtMi0ySDVhMiAyIDAgMCAwLTIgMnYxMmEyIDIgMCAwIDAgMiAyaDdhMiAyIDAgMCAwIDItMnYtMm00LTcgMyAzaC02bTMgMyAzLTMiLz48L2c+PC9zdmc+");
 }
 
-map:not(:has(p, pre))::after
+map:where(:not(:has(p, pre)))::after
 {
   mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-photo%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M15%208h.01%22%20%2F%3E%3Cpath%20d%3D%22M3%206a3%203%200%200%201%203%20-3h12a3%203%200%200%201%203%203v12a3%203%200%200%201%20-3%203h-12a3%203%200%200%201%20-3%20-3v-12z%22%20%2F%3E%3Cpath%20d%3D%22M3%2016l5%20-5c.928%20-.893%202.072%20-.893%203%200l5%205%22%20%2F%3E%3Cpath%20d%3D%22M14%2014l1%20-1c.928%20-.893%202.072%20-.893%203%200l3%203%22%20%2F%3E%3C%2Fsvg%3E");
 }
 
-a:not(:has(p, pre))[href]::after
+:where(a:not(:has(p, pre)))[href]::after
 {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItZXh0ZXJuYWwtbGluayI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTEyIDZoLTZhMiAyIDAgMCAwIC0yIDJ2MTBhMiAyIDAgMCAwIDIgMmgxMGEyIDIgMCAwIDAgMiAtMnYtNiIgLz48cGF0aCBkPSJNMTEgMTNsOSAtOSIgLz48cGF0aCBkPSJNMTUgNGg1djUiIC8+PC9zdmc+");
 }
 
-a:not(:has(p, pre))[href]:hover {
+:where(a:not(:has(p, pre)))[href]:hover {
   cursor: pointer;
   text-decoration: underline 1px currentColor;
 }
