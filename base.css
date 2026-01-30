@@ -1271,7 +1271,13 @@ cite::before {
   content: "\"";
 }
 
+small::before {
+  content: "("
+}
 
+small::after {
+  content: ")"
+}
 
 /* 6 */
 
