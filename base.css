@@ -627,6 +627,11 @@ main > section > :is(section, article) > :is(section, article) > :is(section, ar
   z-index: 1;
 }
 
+* {
+  scroll-margin-top: 1lh;
+}
+
+
 /* 4a */
 article::before {
   font-weight: bold;
