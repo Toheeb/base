@@ -97,7 +97,7 @@ html {
  *
 *****************************************************/
 
-hgroup > p:has(~ :is(h1, h2, h3, h4, h5, h6))
+hgroup > p:has(~ :where(h1, h2, h3, h4, h5, h6))
 {
   font-size: calc(pow(var(--font-scale), -1) * 1em);
 }
@@ -111,7 +111,7 @@ html
   font-size: calc(pow(var(--font-scale), 0) * 1em);
 }
 
-hgroup > :is(h1, h2, h3, h4, h5, h6) ~ p
+hgroup > :where(h1, h2, h3, h4, h5, h6) ~ p
 {
   font-size: calc(pow(var(--font-scale), 1) * 1em);
 }
@@ -218,7 +218,7 @@ h6
   line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 2)));
 }
 
-hgroup > :is(h1, h2, h3, h4, h5, h6) ~ p
+hgroup > :where(h1, h2, h3, h4, h5, h6) ~ p
 {
   line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 1)));
 }
@@ -231,7 +231,7 @@ html
   line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), 0)));
 }
 
-hgroup > p:has(~ :is(h1, h2, h3, h4, h5, h6))
+hgroup > p:has(~ :where(h1, h2, h3, h4, h5, h6))
 {
   line-height: calc(1 + ((var(--line-height) - 1) / pow(var(--font-scale), -1)));
 }
@@ -255,12 +255,12 @@ pre
 
 /* 3b */
 
-:is(p, pre):has(> span:first-child):has(> span:first-child > :is(audio, video, iframe, object, svg:not([height='16']), img:not([height="16"])):only-child)
+:is(p, pre):where(:has(> span:first-child):has(> span:first-child > :where(audio, video, iframe, object, svg:not([height='16']), img:not([height="16"])):only-child))
 {
   margin-block-start: calc(2 * var(--line-lead));
 }
 
-:is(p, pre):has(> span:last-child):has(> span:last-child > :is(audio, video, iframe, object, svg:not([height='16']), img:not([height="16"])):only-child)
+:is(p, pre):where(:has(> span:last-child):has(> span:last-child > :where(audio, video, iframe, object, svg:not([height='16']), img:not([height="16"])):only-child))
 {
   margin-block-end: calc(2 * var(--line-lead));
 
@@ -271,27 +271,27 @@ pre
 
 /* 3d */
 
-:is(section, article):has(> hgroup > h6) {
+:where(section, article):has(> hgroup > h6) {
   padding-block-start: calc(2 * var(--line-lead));
 }
 
-:is(section, article):has(> hgroup > h5) {
+:where(section, article):has(> hgroup > h5) {
   padding-block-start: calc(3 * var(--line-lead));
 }
 
-:is(section, article):has(> hgroup > h4) {
+:where(section, article):has(> hgroup > h4) {
   padding-block-start: calc(4 * var(--line-lead));
 }  
 
-:is(section, article):has(> hgroup > h3) {
+:where(section, article):has(> hgroup > h3) {
   padding-block-start: calc(5 * var(--line-lead));
 }
 
-:is(section, article):has(> hgroup > h2) {
+:where(section, article):has(> hgroup > h2) {
   padding-block-start: calc(6 * var(--line-lead));
 }
 
-:is(section, article):has(> hgroup > h1) {
+:where(section, article):has(> hgroup > h1) {
   padding-block-start: calc(7 * var(--line-lead));
 } 
 
@@ -336,7 +336,7 @@ pre
 }
 
 /* 2 */
-section:has(> hgroup) > *:not(:is(section:has(> hgroup), hgroup))
+section:has(> hgroup) > *:not(:where(section:has(> hgroup), hgroup))
 {
   width: 100%;
   max-width: calc((6 * var(--line-lead)) + var(--line-length));
@@ -363,11 +363,11 @@ address,
 details,
 fieldset, 
 blockquote, 
-a:has(:is(p, pre)),
-del:has(:is(p, pre)),
-ins:has(:is(p, pre)),
-map:has(:is(p, pre)),
-object:has(:is(p, pre, h1, h2, h3, h4, h5, h6, summary, legend, dt, th)) > div:only-child
+a:has(:where(p, pre)),
+del:has(:where(p, pre)),
+ins:has(:where(p, pre)),
+map:has(:where(p, pre)),
+object:has(:where(p, pre, h1, h2, h3, h4, h5, h6, summary, legend, dt, th)) > div:only-child
 {
   width: 100%;
   max-width: var(--line-length);
@@ -481,7 +481,7 @@ summary, legend, dt, th
 }
 
 /* 3 */
-hgroup p:has(~ :is(h1, h2, h3, h4, h5, h6)) {
+hgroup p:has(~ :where(h1, h2, h3, h4, h5, h6)) {
   width: auto;
   display: inline-block;
   margin: 0 calc(3ch * var(--border-width) / var(--border-width)) 0 0;
@@ -495,7 +495,7 @@ main
   counter-reset: h1;
 }
 
-main > section:has(h1)
+:where(main > section):has(h1)
 {
   counter-reset: h2;
 }
@@ -509,12 +509,12 @@ main > section:has(h1)
 }
 
 
-main > section > :is(section, article):has(> hgroup > h2)
+main > section > :where(section, article):has(> hgroup > h2)
 {
   counter-reset: h3;
 }
 
-:where(main > section > :is(section, article):has(> hgroup > h2))::before
+:where(main > section > :where(section, article):has(> hgroup > h2))::before
 {
   content: var(--content, counter(h2, decimal-leading-zero) "." / "");
 
@@ -528,12 +528,12 @@ main > section > :is(section, article):has(> hgroup > h2)
 } 
 
 
-main > section > :is(section, article) > :is(section, article):has(> hgroup > h3)
+main > section > :where(section, article) > :where(section, article):has(> hgroup > h3)
 {
   counter-reset: h4;
 }
 
-:where(main > section > :is(section, article) > :is(section, article):has(> hgroup > h3))::before
+:where(main > section > :where(section, article) > :where(section, article):has(> hgroup > h3))::before
 {
   content: var(--content, counter(h3, decimal-leading-zero) "." / "");
 
@@ -549,12 +549,12 @@ main > section > :is(section, article) > :is(section, article):has(> hgroup > h3
 } 
 
 
-main > section > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h4)
+main > section > :where(section, article) > :where(section, article) > :where(section, article):has(> hgroup > h4)
 {
   counter-reset: h5;
 }
 
-:where(main > section > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h4))::before
+:where(main > section > :where(section, article) > :where(section, article) > :where(section, article):has(> hgroup > h4))::before
 {
   content: var(--content, counter(h4, decimal-leading-zero) "." / "");
 
@@ -571,12 +571,12 @@ main > section > :is(section, article) > :is(section, article) > :is(section, ar
 } 
 
 
-main > section > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h5)
+main > section > :where(section, article) > :where(section, article) > :where(section, article) > :where(section, article):has(> hgroup > h5)
 {
   counter-reset: h6;
 }
 
-:where(main > section > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h5))::before
+:where(main > section > :where(section, article) > :where(section, article) > :where(section, article) > :where(section, article):has(> hgroup > h5))::before
 {
   content: var(--content, counter(h5, decimal-leading-zero) "." / "");
 
@@ -593,12 +593,12 @@ main > section > :is(section, article) > :is(section, article) > :is(section, ar
 } 
 
 
-main > section > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h6)
+main > section > :where(section, article) > :where(section, article) > :where(section, article) > :where(section, article) > :where(section, article):has(> hgroup > h6)
 {
   counter-reset: h7;
 }
 
-:where(main > section > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article) > :is(section, article):has(> hgroup > h6))::before
+:where(main > section > :where(section, article) > :where(section, article) > :where(section, article) > :where(section, article) > :where(section, article):has(> hgroup > h6))::before
 {
   content: var(--content, counter(h6, decimal-leading-zero) "." / "");
 
@@ -616,7 +616,7 @@ main > section > :is(section, article) > :is(section, article) > :is(section, ar
 } 
 
 
-:is(section, article)::before 
+:where(section, article)::before 
 {
   font-family: monospace;
   font-size: .7em;
@@ -679,7 +679,7 @@ hr
 /* 9 */
 
 *:has(~ main), main, main ~ *,
-:is(section, article):has(> hgroup) > *
+:where(section, article):has(> hgroup) > *
 {
 
   /* 9a */
@@ -694,14 +694,14 @@ hr
 }
 
 /* 9d */
-:is(section, article):has(> hgroup)
+:where(section, article):has(> hgroup)
 {
   padding-block: 0;
 }
 
 /* 9c */
-:is(*:has(~ main), main, main ~ *):first-child,
-:is(*:has(~ hgroup), hgroup, hgroup ~ *):first-child
+:where(*:has(~ main), main, main ~ *):first-child,
+:where(*:has(~ hgroup), hgroup, hgroup ~ *):first-child
 {
   border-block-start: none;
 }
@@ -722,10 +722,10 @@ hr
   figure, 
   address,
   blockquote, 
-  a:has(:is(p, pre))[href],
-  del:has(:is(p, pre)),
-  ins:has(:is(p, pre)),
-  map:has(:is(p, pre)),
+  a:has(:where(p, pre))[href],
+  del:has(:where(p, pre)),
+  ins:has(:where(p, pre)),
+  map:has(:where(p, pre)),
 )::before
 {
   content: var(--content, "");
@@ -752,7 +752,7 @@ hr
 }
 
 /* 10d */
-:is(*:has(~ main), main, main ~ *)::before
+:where(*:has(~ main), main, main ~ *)::before
 {
   top: 1em;
 }
@@ -786,16 +786,16 @@ article::before
 }
 
 
-map:has(:is(p, pre))::before
+map:has(:where(p, pre))::before
 {
   mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-photo%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M15%208h.01%22%20%2F%3E%3Cpath%20d%3D%22M3%206a3%203%200%200%201%203%20-3h12a3%203%200%200%201%203%203v12a3%203%200%200%201%20-3%203h-12a3%203%200%200%201%20-3%20-3v-12z%22%20%2F%3E%3Cpath%20d%3D%22M3%2016l5%20-5c.928%20-.893%202.072%20-.893%203%200l5%205%22%20%2F%3E%3Cpath%20d%3D%22M14%2014l1%20-1c.928%20-.893%202.072%20-.893%203%200l3%203%22%20%2F%3E%3C%2Fsvg%3E");
 }
 
-del:has(:is(p, pre))::before {
+del:has(:where(p, pre))::before {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItZmlsZS1taW51cyI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE0IDN2NGExIDEgMCAwIDAgMSAxaDQiIC8+PHBhdGggZD0iTTE3IDIxaC0xMGEyIDIgMCAwIDEgLTIgLTJ2LTE0YTIgMiAwIDAgMSAyIC0yaDdsNSA1djExYTIgMiAwIDAgMSAtMiAyeiIgLz48cGF0aCBkPSJNOSAxNGw2IDAiIC8+PC9zdmc+");
 }
 
-ins:has(:is(p, pre))::before 
+ins:has(:where(p, pre))::before 
 {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItZmlsZS1wbHVzIj48cGF0aCBzdHJva2U9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMTQgM3Y0YTEgMSAwIDAgMCAxIDFoNCIgLz48cGF0aCBkPSJNMTcgMjFoLTEwYTIgMiAwIDAgMSAtMiAtMnYtMTRhMiAyIDAgMCAxIDIgLTJoN2w1IDV2MTFhMiAyIDAgMCAxIC0yIDJ6IiAvPjxwYXRoIGQ9Ik0xMiAxMWwwIDYiIC8+PHBhdGggZD0iTTkgMTRsNiAwIiAvPjwvc3ZnPg==");
 }
@@ -819,7 +819,7 @@ blockquote::before {
   mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-quotes%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M4%2012c-1.333%20-1.854%20-1.333%20-4.146%200%20-6%22%20%2F%3E%3Cpath%20d%3D%22M8%2012c-1.333%20-1.854%20-1.333%20-4.146%200%20-6%22%20%2F%3E%3Cpath%20d%3D%22M16%2018c1.333%20-1.854%201.333%20-4.146%200%20-6%22%20%2F%3E%3Cpath%20d%3D%22M20%2018c1.333%20-1.854%201.333%20-4.146%200%20-6%22%20%2F%3E%3C%2Fsvg%3E");
 }
 
-a:has(:is(p, pre))[href]::before
+a:has(:where(p, pre))[href]::before
 {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItbGluayI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTkgMTVsNiAtNiIgLz48cGF0aCBkPSJNMTEgNmwuNDYzIC0uNTM2YTUgNSAwIDAgMSA3LjA3MSA3LjA3MmwtLjUzNCAuNDY0IiAvPjxwYXRoIGQ9Ik0xMyAxOGwtLjM5NyAuNTM0YTUuMDY4IDUuMDY4IDAgMCAxIC03LjEyNyAwYTQuOTcyIDQuOTcyIDAgMCAxIDAgLTcuMDcxbC41MjQgLS40NjMiIC8+PC9zdmc+");
 }
@@ -892,10 +892,10 @@ address,
 details,
 fieldset, 
 blockquote, 
-a:has(:is(p, pre)),
-del:has(:is(p, pre)),
-ins:has(:is(p, pre)),
-map:has(:is(p, pre))
+a:has(:where(p, pre)),
+del:has(:where(p, pre)),
+ins:has(:where(p, pre)),
+map:has(:where(p, pre))
 {
   border: 
     calc(1px * var(--border-width))
@@ -927,7 +927,7 @@ dialog::backdrop {
 
 
 /* 1d */
-:is(
+:where(
   ul,
   ol,
   dl,
@@ -938,12 +938,12 @@ dialog::backdrop {
   details,
   fieldset,
   blockquote, 
-  a:has(:is(p, pre)),
-  del:has(:is(p, pre)),
-  ins:has(:is(p, pre)),
-  map:has(:is(p, pre)),
+  a:has(:where(p, pre)),
+  del:has(:where(p, pre)),
+  ins:has(:where(p, pre)),
+  map:has(:where(p, pre)),
 ) + 
-:is(
+:where(
   ul,
   ol,
   dl,
@@ -953,17 +953,17 @@ dialog::backdrop {
   address,
   details,
   blockquote, 
-  a:has(:is(p, pre)),
-  del:has(:is(p, pre)),
-  ins:has(:is(p, pre)),
-  map:has(:is(p, pre)),
+  a:has(:where(p, pre)),
+  del:has(:where(p, pre)),
+  ins:has(:where(p, pre)),
+  map:has(:where(p, pre)),
 ) 
 {
   margin-block-start: calc(3 * var(--line-lead));
 }
 
 /* 1f */
-:is(p, pre) + fieldset:has(> legend)
+:where(p, pre) + fieldset:has(> legend)
 {
   margin-block-start: calc(1 * var(--line-lead));
 }
@@ -975,14 +975,14 @@ dl
 }
 
 /* 2 */
-:is(
+:where(
   figure, 
   address,
   blockquote, 
-  a:has(:is(p, pre)),
-  del:has(:is(p, pre)),
-  ins:has(:is(p, pre)),
-  map:has(:is(p, pre)),
+  a:has(:where(p, pre)),
+  del:has(:where(p, pre)),
+  ins:has(:where(p, pre)),
+  map:has(:where(p, pre)),
 )::before
 {
   transform: translate(-3.2em, 1em);
@@ -1416,7 +1416,7 @@ input[type=checkbox]
 }
 
 span:has(> 
-  :is(
+  :where(
     textarea,
     input[type=radio], 
     input[type=range], 
@@ -1484,7 +1484,7 @@ span > :where(input[type=password]:only-child)
 
 :where(
   span:has(
-    > :is(
+    > :where(
       input[type=tel], 
       input[type=url], 
       input[type=text],
