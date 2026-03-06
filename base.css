@@ -1114,6 +1114,7 @@ dl > div
 /* 4c */
 ::marker
 {
+  content: var(--content);
   font-size: .75em;
 }
 
