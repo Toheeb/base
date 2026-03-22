@@ -1386,7 +1386,7 @@ map:where(:not(:has(p, pre)))::after
 button,
 select,
 textarea,
-input[type]
+:where(input[type])
 {
   font: inherit;
 
