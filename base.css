@@ -1175,6 +1175,7 @@ dl > div
 /* 1 */
 :where(svg, img)[height="16"] {
   height: 1em;
+  vertical-align: middle;
 }
 
 /* 2 */
