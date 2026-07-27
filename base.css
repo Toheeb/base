@@ -239,13 +239,7 @@ hgroup > p:has(~ :where(h1, h2, h3, h4, h5, h6))
 
 /* 3a */
 
-video,
-audio, 
-iframe, 
-object,
-svg:not([height='16']), 
-img:not([height='16']),
-
+[data-display="block"],
 p,
 pre
 {
