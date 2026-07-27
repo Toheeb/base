@@ -327,8 +327,16 @@ pre
 
 
 /* 1 */
-*:has(~ main), main, main ~ *
-{
+body > :where(
+  aside, 
+  footer, 
+  form, 
+  header, 
+  main, 
+  nav, 
+  section, 
+  search
+) {
   width: 100%;
   max-width: calc(1.5 * var(--line-length));
   margin-inline: auto;
@@ -388,7 +396,16 @@ hr
 td, 
 th,
 caption,
-*:has(~ main), main, main ~ *
+body > :where(
+  aside, 
+  footer, 
+  form, 
+  header, 
+  main, 
+  nav, 
+  section, 
+  search
+)
 {
   padding-inline: calc(3ch * var(--border-width) / var(--border-width));
 }
@@ -678,7 +695,16 @@ hr
 
 /* 9 */
 
-*:has(~ main), main, main ~ *,
+body > :where(
+  aside, 
+  footer, 
+  form, 
+  header, 
+  main, 
+  nav, 
+  section, 
+  search
+),
 :where(section, article):has(> hgroup) > *
 {
 
@@ -700,7 +726,16 @@ hr
 }
 
 /* 9c */
-:where(*:has(~ main), main, main ~ *):first-child,
+body > :where(
+  aside, 
+  footer, 
+  form, 
+  header, 
+  main, 
+  nav, 
+  section, 
+  search
+):first-child,
 :where(*:has(~ hgroup), hgroup, hgroup ~ *):first-child
 {
   border-block-start: none;
