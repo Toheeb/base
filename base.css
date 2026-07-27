@@ -1214,12 +1214,7 @@ dl > div
 }
 
 /* 2 */
-video,
-audio, 
-iframe, 
-object,
-svg:not([height='16']), 
-img:not([height='16'])
+[data-display="block"]
 {
   display: block;
   max-width: 100%;
