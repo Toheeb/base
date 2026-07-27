@@ -1342,7 +1342,7 @@ a:not(:has(p, pre))
   mask-size: cover;
   mask-repeat: no-repeat;
   background-color: currentColor;
-  vertical-align: text-top;
+  vertical-align: top;
 }
 
 kbd::after,
