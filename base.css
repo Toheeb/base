@@ -1202,10 +1202,10 @@ dl > div
 ******************************************/
 
 /* 1 */
-:where(svg, img)[height="16"] {
-  height: 1em;
+svg, img {
   vertical-align: middle;
 }
+
 
 /* 2 */
 [data-display="block"]
@@ -1416,7 +1416,6 @@ textarea,
   font: inherit;
 
   /* 7a */
-  height: 1lh;
   border: calc(1px * var(--border-width)) solid var(--border-color);
   padding: 0 .5em var(--lh-pad);
 
@@ -1436,13 +1435,6 @@ textarea,
 
 /* 7b */
 
-textarea,
-input[type=range],
-input[type=radio],
-input[type=checkbox]
-{
-  height: auto;
-}
 
 span:has(> 
   :where(
