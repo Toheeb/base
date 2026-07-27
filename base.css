@@ -1455,15 +1455,6 @@ span:has(>
 
 
 /* 7c */
-button, 
-input[type=image],
-input[type=reset],
-input[type=submit],
-input[type=button]
-{
-  line-height: .5lh;
-  height: 2lh;
-}
 
 
 /* 8 */
