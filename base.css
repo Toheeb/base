@@ -1407,7 +1407,7 @@ map:where(:not(:has(p, pre)))::after
 
 
 /* 7 */
-
+[role="button"],
 button,
 select,
 textarea,
@@ -1417,7 +1417,7 @@ textarea,
 
   /* 7a */
   height: 1lh;
-  border: 1px solid currentColor;
+  border: calc(1px * var(--border-width)) solid var(--border-color);
   padding: 0 .5em var(--lh-pad);
 
   /* 7d */
@@ -1430,6 +1430,9 @@ textarea,
   cursor: pointer;
 }
 
+[role="button"] {
+  --content: none;
+} 
 
 /* 7b */
 
