@@ -1521,8 +1521,7 @@ span > :where(input[type=password]:only-child)
   height: 1em;
   mask-size: cover;
   mask-repeat: no-repeat;
-  background-color: #000;
-  color: currentColor;
+  background-color: currentColor;
 }
 
 span:where(:has(input[type=search]:only-child))::after 
