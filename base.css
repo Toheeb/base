@@ -249,12 +249,12 @@ pre
 
 /* 3b */
 
-:is(p, pre):where(:has(> span:first-child):has(> span:first-child > :where(audio, video, iframe, object, svg:not([height='16']), img:not([height="16"])):only-child))
+:is(p, pre):where(:has(> span:first-child):has(> span:first-child > :where([data-display="block"]):only-child))
 {
   margin-block-start: calc(2 * var(--line-lead));
 }
 
-:is(p, pre):where(:has(> span:last-child):has(> span:last-child > :where(audio, video, iframe, object, svg:not([height='16']), img:not([height="16"])):only-child))
+:is(p, pre):where(:has(> span:last-child):has(> span:last-child > :where([data-display="block"]):only-child))
 {
   margin-block-end: calc(2 * var(--line-lead));
 
