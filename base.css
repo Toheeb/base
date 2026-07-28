@@ -1417,7 +1417,7 @@ textarea,
 
   /* 7a */
   border: calc(1px * var(--border-width)) solid var(--border-color);
-  padding: 0 .5em var(--lh-pad);
+  padding: 0 calc(.5em * var(--border-width)) var(--lh-pad);
 
   /* 7d */
   background-color: transparent;
