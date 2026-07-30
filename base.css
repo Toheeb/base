@@ -680,7 +680,7 @@ hr
   height: 0;
 
   border: none;
-  border-block-end: 1px solid;
+  border-block-end: calc(var(--border-width) * 2px);
   border-color: color-mix(in srgb, currentColor 50%, transparent 100%);
 
   margin-block: calc(2 * var(--line-lead));
@@ -1023,12 +1023,12 @@ dl
 
 figcaption:first-child
 {
-  border-block-end: 1px solid var(--border-color);
+  border-block-end: calc(1px * var(--border-width)) solid var(--border-color);
 }
 
 figcaption:last-child
 {
-  border-block-start: 1px solid var(--border-color);
+  border-block-start: calc(1px * var(--border-width)) solid var(--border-color);
 }
 
 
@@ -1077,7 +1077,7 @@ table
 caption
 {
   display: block;
-  border: 1px solid var(--border-color);
+  border: calc(var(--border-width) * 2px) var(--border-color);
   text-align: start;
   position: sticky;
   left: 0;
