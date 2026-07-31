@@ -1021,12 +1021,12 @@ dl
 
 /* 3a */
 
-figcaption:first-child
+figcaption:where(:first-child)
 {
   border-block-end: calc(1px * var(--border-width)) solid var(--border-color);
 }
 
-figcaption:last-child
+figcaption:where(:last-child)
 {
   border-block-start: calc(1px * var(--border-width)) solid var(--border-color);
 }
