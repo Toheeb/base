@@ -37,7 +37,7 @@
 html {
 
   /* 1a */
-  font-family: system-ui, sans-serif;
+  font-family:  system-ui, sans-serif;
   font-size: 1rem;
   
   /* 1b */
@@ -82,7 +82,6 @@ html {
   color: inherit;
   font: inherit;
 }
-
 
 
 /****************************************************
@@ -239,28 +238,40 @@ hgroup > p:has(~ :where(h1, h2, h3, h4, h5, h6))
 
 /* 3a */
 
-[data-display="block"],
+/* [data-display="block"], */
 p,
 pre
 {
   margin-block: var(--line-lead);
 }
+/* 
+p:where(:has(> span:first-child > :is(audio, canvas, embed, iframe, img, object, svg, video, picture):only-child)) {
+  margin-block-start: calc(2 * var(--line-lead));
+}
+
+p:where(:has(> span:last-child > :is(audio, canvas, embed, iframe, img, object, svg, video, picture):only-child)) {
+  margin-block-end: calc(2 * var(--line-lead));
+} */
+
 
 
 /* 3b */
 
-:is(p, pre):where(:has(> span:first-child):has(> span:first-child > :where([data-display="block"]):only-child))
-{
+/* Add a small margin by default. To target those within a text. It also adds to p's margin if at start or end. */
+span:where(:has(> [data-display="block"]:only-child)) {
+  margin-block: var(--line-lead);
+}
+
+span:where(:first-child:has(> [data-display="block"]:only-child)) {
   margin-block-start: calc(2 * var(--line-lead));
 }
 
-:is(p, pre):where(:has(> span:last-child):has(> span:last-child > :where([data-display="block"]):only-child))
-{
-  margin-block-end: calc(2 * var(--line-lead));
-
-  /* 4c */
-  padding-block-end: 0;
+/* remove the lh pad if the last of paragraph. To be added via paragraph. padding makes this result inclusive of the p
+s margin */
+span:where(:last-child:has(> [data-display="block"]:only-child)) {
+  margin-block-end: calc(var(--line-lead) - var(--lh-pad));
 }
+
 
 
 /* 3d */
@@ -321,16 +332,10 @@ pre
 
 
 /* 1 */
-body > :where(
-  aside, 
-  footer, 
-  form, 
-  header, 
-  main, 
-  nav, 
-  section, 
-  search
-) {
+*:has(~ main), 
+main ~ *,
+main
+{
   width: 100%;
   max-width: calc(1.5 * var(--line-length));
   margin-inline: auto;
@@ -390,16 +395,9 @@ hr
 td, 
 th,
 caption,
-body > :where(
-  aside, 
-  footer, 
-  form, 
-  header, 
-  main, 
-  nav, 
-  section, 
-  search
-)
+*:has(~ main), 
+main ~ *,
+main
 {
   padding-inline: calc(3ch * var(--border-width) / var(--border-width));
 }
@@ -489,6 +487,7 @@ h1, h2, h3, h4, h5, h6,
 summary, legend, dt, th
 {
   font-weight: 700;
+  text-wrap: balance;
 }
 
 /* 3 */
@@ -663,7 +662,7 @@ summary
   cursor: pointer;
 
   /* 6b */
-  list-style-position: outside;
+  /* list-style-position: outside; */
 }
 
 /* 7 */
@@ -679,9 +678,7 @@ hr
 
   height: 0;
 
-  border: none;
   border-block-end: calc(var(--border-width) * 2px);
-  border-color: color-mix(in srgb, currentColor 50%, transparent 100%);
 
   margin-block: calc(2 * var(--line-lead));
 }
@@ -689,17 +686,10 @@ hr
 
 /* 9 */
 
-body > :where(
-  aside, 
-  footer, 
-  form, 
-  header, 
-  main, 
-  nav, 
-  section, 
-  search
-),
-:where(section, article):has(> hgroup) > *
+:where(section, article):has(> hgroup) > *,
+*:has(~ main), 
+main ~ *,
+main
 {
 
   /* 9a */
@@ -720,16 +710,8 @@ body > :where(
 }
 
 /* 9c */
-body > :where(
-  aside, 
-  footer, 
-  form, 
-  header, 
-  main, 
-  nav, 
-  section, 
-  search
-):first-child,
+main:not(:has(~ *)),
+*:not(main):has(~ main):not(* + *),
 :where(*:has(~ hgroup), hgroup, hgroup ~ *):first-child
 {
   border-block-start: none;
@@ -771,7 +753,7 @@ body > :where(
   margin-top: -1em;
   
   /* 10b */
-  transform: translate(-1.4em, 1em);
+  transform: translate(-2em, .5em);
 
   /* 10c */
   position: sticky;
@@ -784,6 +766,10 @@ body > :where(
 :where(*:has(~ main), main, main ~ *)::before
 {
   top: 1em;
+}
+
+:where(*:first-child:has(~ main))::before {
+  top: 0;
 }
 
 
@@ -911,10 +897,6 @@ form::before {
 ******************************************/
 
 /* 1 */
-ul,
-ol,
-dl,
-menu,
 figure, 
 dialog,
 address,
@@ -945,6 +927,12 @@ map:has(:where(p, pre))
   text-decoration: none;
 }
 
+details {
+  border: 0;
+  padding-inline: 0;
+  margin-block: var(--line-lead);
+}
+
 dialog {
   margin: auto;
 }
@@ -957,10 +945,6 @@ dialog::backdrop {
 
 /* 1d */
 :where(
-  ul,
-  ol,
-  dl,
-  menu,
   table,
   figure, 
   address,
@@ -973,10 +957,6 @@ dialog::backdrop {
   map:has(:where(p, pre)),
 ) + 
 :where(
-  ul,
-  ol,
-  dl,
-  menu,
   table,
   figure, 
   address,
@@ -1033,7 +1013,7 @@ figcaption:where(:last-child)
 
 
 /* 3b */
-legend,
+/* legend,
 details[open] > summary
 {
   border-block-end: 
@@ -1041,7 +1021,7 @@ details[open] > summary
     solid
     var(--border-color)
   ;
-} 
+}  */
 
 
 /* 3c */
@@ -1115,7 +1095,23 @@ ul,
 dl,
 menu 
 {
-  padding-inline-start: calc(3ch * var(--border-width) / var(--border-width));
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -1em;
+
+    width: 1ch;
+    height: .5px;
+
+    background-color: var(--border-color);
+  }
+
+  & & {
+    padding-inline: calc(3ch * var(--border-width) / var(--border-width));
+  }
 }
 
 
@@ -1206,23 +1202,29 @@ svg, img {
   vertical-align: middle;
 }
 
+svg, math, canvas, img, video, audio, iframe, embed, object
+{
+  max-width: 100%;
+}
+
+span:has(> :where([data-display="block"]):only-child)
+{
+  max-width: calc(100% + var(--line-lead)*2);
+  width: clamp(100%, var(--border-width) * 100vw, 100vw);
+  translate: calc(var(--line-lead) * -1);
+  display: block;
+}
 
 /* 2 */
 [data-display="block"]
 {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 
 /* 3 */
-kbd,
-code,
-samp,
-output
-{
-  font-family: monospace;
-}
 
 
 /* 4 */
@@ -1427,11 +1429,81 @@ textarea,
   
   /* 7f */
   cursor: pointer;
+
+  &[disabled] {
+    opacity: .5;
+  }
+}
+
+select {
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  padding-right: 1.5em;
+}
+
+select::after {
+  content: "";
+  display: block;
+  background-color: var(--background-color);
+  border-left: 1px solid var(--border-color);
+  width: 1em;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+select::picker-icon {
+  position: absolute;
+  right: .4em;
+  z-index: 10;
+  padding-top: var(--lh-pad);
+  transform-origin: 50% 60%;
 }
 
 [role="button"] {
   --content: none;
 } 
+
+:where(
+  input[type="text"][list],
+  input[type="search"][list],
+  input[type="tel"][list],
+  input[type="url"][list],
+  input[type="email"][list],
+) {
+  padding-right: 1em;
+
+  background-image: linear-gradient(
+    to right, 
+    transparent calc(100% - 1rem), 
+    var(--border-color) calc(100% - 1rem), 
+    var(--border-color) calc(100% - 1rem + 1px), 
+    transparent calc(100% - 1rem + 1px)
+  );
+
+
+  &::-webkit-calendar-picker-indicator {
+    display: none !important;
+    appearance: none;
+  }
+
+  span:has(> &:only-child):focus-within::after {
+    content: "";
+    width: .5em;
+    height: .5em;
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'><path d='M20.118 3h-16.225a2.914 2.914 0 0 0 -2.503 4.371l8.116 13.549a2.917 2.917 0 0 0 4.987 .005l8.11 -13.539a2.914 2.914 0 0 0 -2.486 -4.386z' /></svg>");
+    mask-repeat: no-repeat;
+    background-color: currentColor;
+    position: absolute;
+    top: calc(50% - (.5em / 1.6));
+    right: .3em;
+  }
+}
+
+
+
 
 /* 7b */
 
@@ -1506,7 +1578,7 @@ span > :where(input[type=password]:only-child)
       input[type=password],
     ):only-child
   )
-)::after
+)::before
 {
   content: var(--content, "");
   position: absolute;
@@ -1524,37 +1596,37 @@ span > :where(input[type=password]:only-child)
   background-color: currentColor;
 }
 
-span:where(:has(input[type=search]:only-child))::after 
+span:where(:has(input[type=search]:only-child))::before 
 {
   mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20class%3D%22icon%20icon-tabler%20icons-tabler-outline%20icon-tabler-search%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M10%2010m-7%200a7%207%200%201%200%2014%200a7%207%200%201%200%20-14%200%22%20%2F%3E%3Cpath%20d%3D%22M21%2021l-6%20-6%22%20%2F%3E%3C%2Fsvg%3E");
 }
 
-span:where(:has(input[type=text]:only-child))::after 
+span:where(:has(input[type=text]:only-child))::before 
 {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItdGV4dC1pbmNyZWFzZSI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgc3Ryb2tlPSJub25lIi8+PHBhdGggZD0iTTQgMTlWOC41YTMuNSAzLjUgMCAxIDEgNyAwVjE5bS03LTZoN203LTR2Nm0zLTNoLTYiLz48L3N2Zz4=");
 }
 
-span:where(:has(input[type=tel]:only-child))::after 
+span:where(:has(input[type=tel]:only-child))::before 
 {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItcGhvbmUiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik01IDRoNGwyIDUtMi41IDEuNWExMSAxMSAwIDAgMCA1IDVMMTUgMTNsNSAydjRhMiAyIDAgMCAxLTIgMkExNiAxNiAwIDAgMSAzIDZhMiAyIDAgMCAxIDItMiIvPjwvc3ZnPg==");
 }
 
-span:where(:has(input[type=email]:only-child))::after 
+span:where(:has(input[type=email]:only-child))::before 
 {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItYXQiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik04IDEyYTQgNCAwIDEgMCA4IDAgNCA0IDAgMSAwLTggMCIvPjxwYXRoIGQ9Ik0xNiAxMnYxLjVhMi41IDIuNSAwIDAgMCA1IDBWMTJhOSA5IDAgMSAwLTUuNSA4LjI4Ii8+PC9zdmc+");
 }
 
-span:where(:has(input[type=number]:only-child))::after 
+span:where(:has(input[type=number]:only-child))::before 
 {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItbnVtYmVyLTEyMyI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgc3Ryb2tlPSJub25lIi8+PHBhdGggZD0ibTMgMTAgMi0ydjhtNC04aDNhMSAxIDAgMCAxIDEgMXYyYTEgMSAwIDAgMS0xIDFoLTJhMSAxIDAgMCAwLTEgMXYyYTEgMSAwIDAgMCAxIDFoM200LThoMi41QTEuNSAxLjUgMCAwIDEgMjEgOS41djFhMS41IDEuNSAwIDAgMS0xLjUgMS41SDE4aDEuNWExLjUgMS41IDAgMCAxIDEuNSAxLjV2MWExLjUgMS41IDAgMCAxLTEuNSAxLjVIMTciLz48L3N2Zz4=");
 }
 
-span:where(:has(input[type=password]:only-child))::after 
+span:where(:has(input[type=password]:only-child))::before 
 {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItcGFzc3dvcmQiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik0xMiAxMHY0bS0yLTEgNC0ybS00IDAgNCAybS05LTN2NG0tMi0xIDQtMm0tNCAwIDQgMm0xMi0zdjRtLTItMSA0LTJtLTQgMCA0IDIiLz48L3N2Zz4=");
 }
 
-span:where(:has(input[type=url]:only-child))::after 
+span:where(:has(input[type=url]:only-child))::before 
 {
   mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItd29ybGQtd3d3Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBzdHJva2U9Im5vbmUiLz48cGF0aCBkPSJNMTkuNSA3QTkgOSAwIDAgMCAxMiAzYTguOTkgOC45OSAwIDAgMC03LjQ4NCA0Ii8+PHBhdGggZD0iTTExLjUgM2ExNyAxNyAwIDAgMC0xLjgyNiA0TTEyLjUgM2ExNyAxNyAwIDAgMSAxLjgyOCA0TTE5LjUgMTdhOSA5IDAgMCAxLTcuNSA0IDguOTkgOC45OSAwIDAgMS03LjQ4NC00Ii8+PHBhdGggZD0iTTExLjUgMjFhMTcgMTcgMCAwIDEtMS44MjYtNG0yLjgyNiA0YTE3IDE3IDAgMCAwIDEuODI4LTRNMiAxMGwxIDQgMS41LTRMNiAxNGwxLTRtMTAgMCAxIDQgMS41LTQgMS41IDQgMS00TTkuNSAxMGwxIDQgMS41LTQgMS41IDQgMS00Ii8+PC9zdmc+");
 }

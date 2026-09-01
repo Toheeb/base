@@ -1,12 +1,29 @@
 {
   "name": "@toheeb/base",
-  "version": "2.0.2",
+  "version": "3.0.0-alpha.0",
   "description": "The web's first multipurpose classless stylesheet, with the most semantic rules, for complete customization and personalization of a webpage.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": "Toheeb Ogunbiyi",
+  "type": "module",
+  "source": "src/index.js",
+  "main": "./dist/base.module.js",
+  "module": "./dist/base.module.js",
+  "exports": {
+    ".": {
+      "import": "./dist/base.module.js"
+    },
+    "./css": "./dist/base.css"
   },
-  "keywords": ["css"],
-  "author": "2",
-  "license": "See license in license.md"
+  "style": "./dist/base.css",
+  "scripts": {
+    "build": "vite build",
+    "watch": "vite build --watch"
+  },
+  "keywords": [
+    "css",
+    "js"
+  ],
+  "license": "See license in license.md",
+  "devDependencies": {
+    "vite": "^8.2.2"
+  }
 }
