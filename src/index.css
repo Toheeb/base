@@ -1097,7 +1097,7 @@ menu
 {
 
   &::after {
-    content: "";
+    content: var(--content, "");
     position: relative;
     bottom: 0;
     left: -1em;
@@ -1443,7 +1443,7 @@ select {
 }
 
 select::after {
-  content: "";
+  content: var(--content, "");
   display: block;
   background-color: var(--background-color);
   border-left: 1px solid var(--border-color);
@@ -1490,7 +1490,7 @@ select::picker-icon {
   }
 
   span:has(> &:only-child):focus-within::after {
-    content: "";
+    content: var(--content, "");
     width: .5em;
     height: .5em;
     mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'><path d='M20.118 3h-16.225a2.914 2.914 0 0 0 -2.503 4.371l8.116 13.549a2.917 2.917 0 0 0 4.987 .005l8.11 -13.539a2.914 2.914 0 0 0 -2.486 -4.386z' /></svg>");

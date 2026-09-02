@@ -1,6 +1,6 @@
 {
   "name": "@toheeb/base",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.0-alpha.1",
   "description": "The web's first multipurpose classless stylesheet, with the most semantic rules, for complete customization and personalization of a webpage.",
   "author": "Toheeb Ogunbiyi",
   "type": "module",
