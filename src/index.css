@@ -1244,7 +1244,7 @@ strong
 }
 
 strong::after {
-  content: var(--content, ":");
+  content: var(--content, ": \00a0");
 }
 
 mark
